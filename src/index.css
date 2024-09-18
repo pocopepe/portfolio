@@ -4,7 +4,7 @@
 
 html, body, #root {
   @apply h-full; /* Ensures the height of the full viewport */
-  @apply bg-black; /* Makes the background completely black */
+  @apply bg-[#141414]; /* Makes the background completely black */
   @apply text-white; /* Optional: sets text color to white for better readability */
 }
 

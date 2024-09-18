@@ -1,27 +1,60 @@
+import A from "./components/A";
+import B from "./components/B";
 import Bubby from "./components/bubbly";
 
 function App() {
   return (
-    <div className="grid grid-cols-4 gap-4 h-screen"> {/* Ensure the grid container takes up the full height of the viewport */}
+    <div className="grid grid-cols-4 gap-4 h-screen">
+      {" "}
       <div className="row-span-2">
-        <Bubby note="meh" title="good job" element={<div className="text-amber-700">meh</div>} />
+        <Bubby element={<A></A>} />
       </div>
-      <Bubby note="meh" title="good job" element={<div className="text-amber-700">meh</div>} />
-      <Bubby note="askm" title="goodooa" element={<div className="text-amber-700">zzzz</div>} />
+      <Bubby
+        element={<B></B>}
+      />
+      <Bubby
+        note="askm"
+        title="goodooa"
+        element={<div className="text-amber-700">zzzz</div>}
+      />
       <div className="row-span-2">
-      <Bubby note="sadkjn" title="asfjknskjfna" element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby
+          note="sadkjn"
+          title="asfjknskjfna"
+          element={<div className="text-amber-700">zzkfmd</div>}
+        />
       </div>
       <div className="row-span-2 col-span-2">
-      <Bubby note="sadkjn" title="asfjknskjfna" element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby
+          note="sadkjn"
+          title="asfjknskjfna"
+          element={<div className="text-amber-700">zzkfmd</div>}
+        />
       </div>
-      <Bubby note="sadkjn" title="asfjknskjfna" element={<div className="text-amber-700">zzkfmd</div>} />
+      <Bubby
+        note="sadkjn"
+        title="asfjknskjfna"
+        element={<div className="text-amber-700">zzkfmd</div>}
+      />
       <div className="row-span-2">
-      <Bubby note="sadkjn" title="asfjknskjfna" element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby
+          note="sadkjn"
+          title="asfjknskjfna"
+          element={<div className="text-amber-700">zzkfmd</div>}
+        />
       </div>
       <div className="col-span-2">
-      <Bubby note="sadkjn" title="asfjknskjfna" element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby
+          note="sadkjn"
+          title="asfjknskjfna"
+          element={<div className="text-amber-700">zzkfmd</div>}
+        />
       </div>
-      <Bubby note="sadkjn" title="asfjknskjfna" element={<div className="text-amber-700">zzkfmd</div>} />
+      <Bubby
+        element={
+        <div className="flex items-center justify-center h-[20vh]">
+        <div className="text-center text-amber-700 text-2xl">© Viju Sanjai, 2024</div></div>}
+      />
     </div>
   );
 }
