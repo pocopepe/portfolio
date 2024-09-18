@@ -1,5 +1,5 @@
 import { Slide } from 'react-slideshow-image';
-import 'react-slideshow-image/dist/styles.css'
+import 'react-slideshow-image/dist/styles.css';
 
 const divStyle = {
   display: 'flex',
@@ -12,23 +12,24 @@ const divStyle = {
 const slideImages = [
   {
     url: new URL('../assets/image1.jpg', import.meta.url).href,
-  },{
-    url: new URL('../assets/image2.jpg', import.meta.url).href,
-  },{
+  },
+  {
     url: new URL('../assets/image3.jpg', import.meta.url).href,
-  },{
+  },
+  {
     url: new URL('../assets/image4.jpg', import.meta.url).href,
-  },{
+  },
+  {
     url: new URL('../assets/image5.jpg', import.meta.url).href,
-  },{
-    url: new URL('../assets/image6.jpg', import.meta.url).href,
-  },{
+  },
+  
+  {
     url: new URL('../assets/image7.jpg', import.meta.url).href,
   }
 ];
 
 const buttonStyle = {
-  width: "30px",
+  width: '30px',
   background: 'none',
   border: '0px'
 };
@@ -37,8 +38,8 @@ const properties = {
   prevArrow: <button style={{ ...buttonStyle }}></button>,
   nextArrow: <button style={{ ...buttonStyle }}></button>,
   autoplay: true,
-  interval: 5000, // Slide interval in milliseconds
-  transitionDuration: 500 // Duration of the slide transition
+  interval: 3000,
+  transitionDuration: 500
 };
 
 const SlideShow = () => {
@@ -46,14 +47,17 @@ const SlideShow = () => {
     <div className="slide-container">
       <Slide {...properties}>
         {slideImages.map((slideImage, index) => (
-          <div key={index}>
-            <div style={{ ...divStyle, backgroundImage: `url(${slideImage.url})` }}>
+          <div key={index} className="rounded-lg overflow-hidden border-4 border-amber-700">
+            <div
+              style={{ ...divStyle, backgroundImage: `url(${slideImage.url})` }}
+              className="rounded-lg"
+            >
             </div>
           </div>
         ))}
       </Slide>
     </div>
   );
-}
+};
 
 export default SlideShow;
