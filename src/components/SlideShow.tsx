@@ -11,20 +11,20 @@ const divStyle = {
 
 const slideImages = [
   {
-    url: new URL('/public/assets/image1.jpg', import.meta.url).href,
+    url: new URL('/assets/image1.jpg', import.meta.url).href,
   },
   {
-    url: new URL('/public/assets/image3.jpg', import.meta.url).href,
+    url: new URL('/assets/image3.jpg', import.meta.url).href,
   },
   {
-    url: new URL('/public/assets/image4.jpg', import.meta.url).href,
+    url: new URL('/assets/image4.jpg', import.meta.url).href,
   },
   {
-    url: new URL('/public/assets/image5.jpg', import.meta.url).href,
+    url: new URL('/assets/image5.jpg', import.meta.url).href,
   },
   
   {
-    url: new URL('/public/assets/image7.jpg', import.meta.url).href,
+    url: new URL('/assets/image7.jpg', import.meta.url).href,
   }
 ];
 
