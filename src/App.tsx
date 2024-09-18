@@ -13,40 +13,34 @@ function App() {
         element={<B></B>}
       />
       <Bubby
-        note="askm"
-        title="goodooa"
+
         element={<div className="text-amber-700">zzzz</div>}
       />
       <div className="row-span-2">
         <Bubby
-          note="sadkjn"
-          title="asfjknskjfna"
+ 
           element={<div className="text-amber-700">zzkfmd</div>}
         />
       </div>
       <div className="row-span-2 col-span-2">
         <Bubby
-          note="sadkjn"
-          title="asfjknskjfna"
+
           element={<div className="text-amber-700">zzkfmd</div>}
         />
       </div>
       <Bubby
-        note="sadkjn"
-        title="asfjknskjfna"
+
         element={<div className="text-amber-700">zzkfmd</div>}
       />
       <div className="row-span-2">
         <Bubby
-          note="sadkjn"
-          title="asfjknskjfna"
+    
           element={<div className="text-amber-700">zzkfmd</div>}
         />
       </div>
       <div className="col-span-2">
         <Bubby
-          note="sadkjn"
-          title="asfjknskjfna"
+     
           element={<div className="text-amber-700">zzkfmd</div>}
         />
       </div>
