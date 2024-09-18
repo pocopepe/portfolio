@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 html, body, #root {
-  @apply h-full; /* Ensures the height of the full viewport */
-  @apply bg-[#141414]; /* Makes the background completely black */
-  @apply text-white; /* Optional: sets text color to white for better readability */
-}
+  @apply h-full; 
+  @apply bg-[#141414];
+  @apply text-white; }
 
 body {
-  margin: 0; /* Removes any default margin */
+  margin: 0; 
 }
+

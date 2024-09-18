@@ -1,7 +1,9 @@
 import A from "./components/A";
 import B from "./components/B";
-import Bubby from "./components/bubbly";
 import C from "./components/C";
+import SlideShow from "./components/SlideShow";
+
+import Bubby from "./components/bubbly";
 
 function App() {
   return (
@@ -13,17 +15,17 @@ function App() {
       <Bubby element={<B></B>} />
       <Bubby element={<C></C>} />
       <div className="row-span-2">
-        <Bubby element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby element={<div className="text-amber-700">techstack</div>} />
       </div>
       <div className="row-span-2 col-span-2">
-        <Bubby element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby element={<SlideShow></SlideShow>} />
       </div>
-      <Bubby element={<div className="text-amber-700">zzkfmd</div>} />
+      <Bubby element={<div className="text-amber-700">project display</div>} />
       <div className="row-span-2">
-        <Bubby element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby element={<div className="text-amber-700">A final word</div>} />
       </div>
       <div className="col-span-2">
-        <Bubby element={<div className="text-amber-700">zzkfmd</div>} />
+        <Bubby element={<div className="text-amber-700">contact me</div>} />
       </div>
       <Bubby
         element={

@@ -1,0 +1,59 @@
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css'
+
+const divStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundSize: 'cover',
+  height: '400px'
+};
+
+const slideImages = [
+  {
+    url: new URL('../assets/image1.jpg', import.meta.url).href,
+  },{
+    url: new URL('../assets/image2.jpg', import.meta.url).href,
+  },{
+    url: new URL('../assets/image3.jpg', import.meta.url).href,
+  },{
+    url: new URL('../assets/image4.jpg', import.meta.url).href,
+  },{
+    url: new URL('../assets/image5.jpg', import.meta.url).href,
+  },{
+    url: new URL('../assets/image6.jpg', import.meta.url).href,
+  },{
+    url: new URL('../assets/image7.jpg', import.meta.url).href,
+  }
+];
+
+const buttonStyle = {
+  width: "30px",
+  background: 'none',
+  border: '0px'
+};
+
+const properties = {
+  prevArrow: <button style={{ ...buttonStyle }}></button>,
+  nextArrow: <button style={{ ...buttonStyle }}></button>,
+  autoplay: true,
+  interval: 5000, // Slide interval in milliseconds
+  transitionDuration: 500 // Duration of the slide transition
+};
+
+const SlideShow = () => {
+  return (
+    <div className="slide-container">
+      <Slide {...properties}>
+        {slideImages.map((slideImage, index) => (
+          <div key={index}>
+            <div style={{ ...divStyle, backgroundImage: `url(${slideImage.url})` }}>
+            </div>
+          </div>
+        ))}
+      </Slide>
+    </div>
+  );
+}
+
+export default SlideShow;
