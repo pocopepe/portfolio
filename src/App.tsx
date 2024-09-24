@@ -4,6 +4,7 @@ import C from "./components/C";
 import SlideShow from "./components/SlideShow";
 
 import Bubby from "./components/bubbly";
+import ProjectDisplay from "./components/projectDisplay";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Bubby element={<B></B>} />
       <Bubby element={<C></C>} />
       <div className="row-span-2">
-        <Bubby element={<div className="text-amber-700">techstack</div>} />
+        <Bubby element={<ProjectDisplay></ProjectDisplay>} />
       </div>
       <div className="row-span-2 col-span-2">
         <Bubby element={<SlideShow></SlideShow>} />
