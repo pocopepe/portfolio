@@ -2,90 +2,178 @@
 ---
 
 <section id="contact" class="contact">
-  <div class="container-portfolio contact__inner">
+  <div class="container-portfolio">
 
-    <!-- Top: heading + email -->
-    <div class="contact__top">
-      <span class="section-label">Contact</span>
-      <h2 class="contact__cta">
-        <span class="word-wrap"><span class="word contact-word">Let's</span></span>
-        <span class="word-wrap"><span class="word contact-word">work</span></span>
-        <span class="word-wrap"><span class="word contact-word">together.</span></span>
-      </h2>
-      <a href="mailto:avijusanjai@gmail.com" class="contact__email">
-        avijusanjai@gmail.com
-      </a>
-    </div>
+    <!-- Section label -->
+    <span class="section-label">Contact</span>
 
-    <!-- Form -->
-    <div class="contact__form-wrap">
-      <form id="contact-form" class="cform" novalidate>
-        <input type="hidden" name="access_key" value="76ad94d5-5134-47d7-90ef-85261955a1e1" />
-        <input type="hidden" name="subject" value="New message from portfolio" />
-        <input type="checkbox" name="botcheck" style="display:none" />
+    <!-- Two-col layout: left info, right form -->
+    <div class="contact__grid">
 
-        <div class="cform__row">
-          <div class="cform__group">
-            <label class="cform__label" for="cf-name">Name</label>
-            <input class="cform__input" type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
+      <!-- Left: CTA + details -->
+      <div class="contact__left">
+        <h2 class="contact__cta">
+          <span class="word-wrap"><span class="word contact-word">Let's</span></span>
+          <span class="word-wrap"><span class="word contact-word">work</span></span>
+          <span class="word-wrap"><span class="word contact-word">together.</span></span>
+        </h2>
+
+        <p class="contact__sub">
+          Open to internships, freelance work, and interesting collaborations.
+          If you have something in mind, I'd love to hear it.
+        </p>
+
+        <div class="contact__details">
+          <div class="contact__detail-item">
+            <span class="contact__detail-label">Email</span>
+            <a href="mailto:avijusanjai@gmail.com" class="contact__detail-value contact__email">
+              avijusanjai@gmail.com
+              <svg class="contact__email-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </a>
           </div>
-          <div class="cform__group">
-            <label class="cform__label" for="cf-email">Email</label>
-            <input class="cform__input" type="email" id="cf-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          <div class="contact__detail-item">
+            <span class="contact__detail-label">Location</span>
+            <span class="contact__detail-value">Chennai, India · GMT+5:30</span>
+          </div>
+          <div class="contact__detail-item">
+            <span class="contact__detail-label">Status</span>
+            <span class="contact__detail-value contact__status">
+              <span class="contact__dot" aria-hidden="true"></span>
+              Available for work
+            </span>
+          </div>
+          <div class="contact__detail-item">
+            <span class="contact__detail-label">Response</span>
+            <span class="contact__detail-value">Usually within 24h</span>
           </div>
         </div>
 
-        <div class="cform__group">
-          <label class="cform__label" for="cf-message">Message</label>
-          <textarea class="cform__input cform__textarea" id="cf-message" name="message" placeholder="What's on your mind?" rows="5" required></textarea>
-        </div>
-
-        <div class="cform__footer">
-          <p class="cform__error" id="cf-error" aria-live="polite"></p>
-          <button type="submit" class="cform__submit" id="cf-submit">
-            <span class="cform__submit-label">Send message</span>
-            <svg class="cform__submit-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="7" y1="17" x2="17" y2="7"/>
-              <polyline points="7 7 17 7 17 17"/>
-            </svg>
-          </button>
-        </div>
-      </form>
-
-      <div class="cform__success" id="cf-success" aria-live="polite">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        <p class="cform__success-heading">Message sent.</p>
-        <p class="cform__success-sub">I'll get back to you soon.</p>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="contact__footer">
-      <p class="contact__copyright">&copy; 2025 Viju Sanjai</p>
-      <ul class="contact__socials">
-        <li>
-          <a href="https://github.com/pocopepe" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <div class="contact__socials">
+          <a href="https://github.com/pocopepe" target="_blank" rel="noopener noreferrer" class="contact__social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
             </svg>
+            GitHub
           </a>
-        </li>
-        <li>
-          <a href="https://linkedin.com/in/vijusanjai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <a href="https://linkedin.com/in/vijusanjai" target="_blank" rel="noopener noreferrer" class="contact__social-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
               <rect x="2" y="9" width="4" height="12"/>
               <circle cx="4" cy="4" r="2"/>
             </svg>
+            LinkedIn
           </a>
-        </li>
-      </ul>
-    </footer>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="contact__right">
+        <form id="contact-form" class="cform" novalidate>
+          <input type="hidden" name="access_key" value="76ad94d5-5134-47d7-90ef-85261955a1e1" />
+          <input type="hidden" name="subject" value="New message from portfolio" />
+          <input type="checkbox" name="botcheck" style="display:none" />
+
+          <div class="cform__row">
+            <div class="cform__group">
+              <label class="cform__label" for="cf-name">Name</label>
+              <div class="cform__input-wrap">
+                <input class="cform__input" type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
+                <div class="cform__input-line"></div>
+              </div>
+            </div>
+            <div class="cform__group">
+              <label class="cform__label" for="cf-email">Email</label>
+              <div class="cform__input-wrap">
+                <input class="cform__input" type="email" id="cf-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+                <div class="cform__input-line"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cform__group">
+            <label class="cform__label" for="cf-message">Message</label>
+            <div class="cform__input-wrap">
+              <textarea class="cform__input cform__textarea" id="cf-message" name="message" placeholder="Tell me about your project, idea, or opportunity." rows="6" required></textarea>
+              <div class="cform__input-line"></div>
+            </div>
+          </div>
+
+          <div class="cform__footer">
+            <p class="cform__error" id="cf-error" aria-live="polite"></p>
+            <button type="submit" class="cform__submit" id="cf-submit">
+              <span class="cform__submit-bg"></span>
+              <span class="cform__submit-content">
+                <span class="cform__submit-label">Send message</span>
+                <svg class="cform__submit-arrow" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="7" y1="17" x2="17" y2="7"/>
+                  <polyline points="7 7 17 7 17 17"/>
+                </svg>
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <div class="cform__success" id="cf-success" aria-live="polite">
+          <div class="cform__success-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div>
+            <p class="cform__success-heading">Message sent.</p>
+            <p class="cform__success-sub">I'll get back to you within 24 hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 </section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container-portfolio footer__inner">
+
+    <div class="footer__top">
+      <a href="/" class="footer__logo" aria-label="Viju Sanjai — home">
+        <span class="footer__logo-mark" aria-hidden="true">
+          <span style="font-weight:200">V</span><span style="font-weight:800">S</span>
+        </span>
+        <span class="footer__logo-name">Viju Sanjai</span>
+      </a>
+
+      <nav class="footer__nav" aria-label="Footer navigation">
+        <a href="/#work">Work</a>
+        <a href="/#experience">Experience</a>
+        <a href="/#skills">Skills</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copy">&copy; 2025 Viju Sanjai · Built with Astro · Deployed on Cloudflare Pages</p>
+      <div class="footer__social-row">
+        <a href="https://github.com/pocopepe" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="footer__social">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </a>
+        <a href="https://linkedin.com/in/vijusanjai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="footer__social">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/>
+            <circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</footer>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement;
@@ -120,7 +208,7 @@
       const json = await res.json();
 
       if (res.ok && json.success) {
-        form.style.display = 'none';
+        form.classList.add('is-hidden');
         successEl.classList.add('is-visible');
       } else {
         errorEl.textContent = json.message ?? 'Something went wrong — email me directly.';
@@ -136,75 +224,176 @@
 </script>
 
 <style>
+  /* ── Contact section ── */
   .contact {
     padding-top: clamp(5rem, 10vw, 9rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+    border-top: 1px solid var(--color-border);
   }
 
-  .contact__inner {
-    display: flex;
-    flex-direction: column;
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 4rem;
   }
 
-  /* Top: heading + email */
-  .contact__top {
+  @media (min-width: 900px) {
+    .contact__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+  }
+
+  /* Left column */
+  .contact__left {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 2.5rem;
   }
 
   .contact__cta {
-    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-size: clamp(2.8rem, 7vw, 6rem);
     font-weight: 200;
     letter-spacing: -0.03em;
     line-height: 1;
     color: var(--color-text);
     display: flex;
-    flex-wrap: wrap;
-    gap: 0 0.25em;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .contact__sub {
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-muted);
+    max-width: 38ch;
+  }
+
+  .contact__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .contact__detail-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+
+  .contact__detail-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    opacity: 0.6;
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+
+  .contact__detail-value {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: 0.01em;
   }
 
   .contact__email {
-    position: relative;
-    display: inline-block;
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
-    font-weight: 300;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--color-accent);
-    letter-spacing: -0.01em;
-    padding-bottom: 2px;
-    align-self: flex-start;
+    transition: gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration: none;
   }
 
-  .contact__email::after {
+  .contact__email:hover {
+    gap: 0.65rem;
+  }
+
+  .contact__email-arrow {
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact__email:hover .contact__email-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .contact__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .contact__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .contact__dot::before {
     content: '';
     position: absolute;
-    left: 0; bottom: 0;
-    width: 100%;
-    height: 1px;
-    background-color: var(--color-accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    inset: -3px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    opacity: 0.3;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
-  .contact__email:hover::after { transform: scaleX(1); }
+  @keyframes ping {
+    0%   { transform: scale(1); opacity: 0.3; }
+    75%, 100% { transform: scale(2.2); opacity: 0; }
+  }
 
-  /* Form */
-  .contact__form-wrap {
-    width: 100%;
-    max-width: 680px;
+  .contact__socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .contact__social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .contact__social-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* ── Form ── */
+  .contact__right {
+    padding-top: 0.5rem;
   }
 
   .cform {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 2rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .cform.is-hidden {
+    display: none;
   }
 
   .cform__row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
+    gap: 2rem;
   }
 
   @media (max-width: 500px) {
@@ -214,46 +403,70 @@
   .cform__group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
 
   .cform__label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 500;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-muted);
+    opacity: 0.7;
+  }
+
+  .cform__input-wrap {
+    position: relative;
   }
 
   .cform__input {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid var(--color-border);
     color: var(--color-text);
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 300;
-    padding: 0.6rem 0;
+    padding: 0.5rem 0 0.75rem;
     outline: none;
     border-radius: 0;
     -webkit-appearance: none;
-    transition: border-color 0.25s ease;
+    display: block;
   }
 
   .cform__input::placeholder {
     color: var(--color-muted);
-    opacity: 0.45;
+    opacity: 0.35;
   }
 
-  .cform__input:focus {
-    border-bottom-color: var(--color-accent);
+  /* Animated bottom border */
+  .cform__input-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+
+  .cform__input-line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cform__input:focus ~ .cform__input-line::after {
+    transform: scaleX(1);
   }
 
   .cform__textarea {
-    resize: vertical;
-    min-height: 110px;
-    line-height: 1.6;
+    resize: none;
+    min-height: 130px;
+    line-height: 1.65;
   }
 
   .cform__footer {
@@ -262,48 +475,66 @@
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
+    padding-top: 0.5rem;
   }
 
   .cform__error {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: #c0392b;
     min-height: 1em;
     flex: 1;
+    font-weight: 300;
   }
 
-  /* Submit */
+  /* Submit button */
   .cform__submit {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.8rem 1.75rem;
-    background-color: var(--color-accent);
-    color: var(--color-bg);
-    border: none;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--color-accent);
     border-radius: 2px;
     font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     cursor: pointer;
     flex-shrink: 0;
     position: relative;
     overflow: hidden;
-    transition: opacity 0.2s ease;
+    background: transparent;
+    transition: border-color 0.25s ease;
   }
 
-  .cform__submit::before {
-    content: '';
+  .cform__submit-bg {
     position: absolute;
     inset: 0;
-    background: rgba(255,255,255,0.12);
+    background-color: var(--color-accent);
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
   }
 
-  .cform__submit:hover::before { transform: scaleX(1); }
+  .cform__submit:hover .cform__submit-bg {
+    transform: scaleX(1);
+  }
+
+  .cform__submit-content {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.75rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cform__submit:hover .cform__submit-content {
+    color: var(--color-bg);
+  }
 
   .cform__submit-arrow {
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -313,67 +544,167 @@
     transform: translate(3px, -3px);
   }
 
-  .cform__submit.is-loading { opacity: 0.65; cursor: not-allowed; }
-  .cform__submit.is-loading .cform__submit-arrow { opacity: 0; }
+  .cform__submit.is-loading {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 
-  /* Success */
+  /* Success state */
   .cform__success {
     display: none;
-    flex-direction: column;
-    gap: 0.5rem;
-    color: var(--color-text);
+    align-items: flex-start;
+    gap: 1.25rem;
     padding: 2rem;
     border: 1px solid var(--color-border);
     border-radius: 4px;
+    background-color: var(--color-surface);
   }
 
-  .cform__success.is-visible { display: flex; }
+  .cform__success.is-visible {
+    display: flex;
+  }
 
-  .cform__success svg {
+  .cform__success-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     color: var(--color-accent);
-    margin-bottom: 0.25rem;
   }
 
   .cform__success-heading {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 300;
     letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-bottom: 0.3rem;
   }
 
   .cform__success-sub {
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 300;
     color: var(--color-muted);
+    line-height: 1.6;
   }
 
-  /* Footer */
-  .contact__footer {
+  /* ── Footer ── */
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    transition: background-color 0.35s ease;
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-block: 3rem;
+  }
+
+  .footer__top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-block: 1.5rem;
-    border-top: 1px solid var(--color-border);
+    gap: 2rem;
+    flex-wrap: wrap;
   }
 
-  .contact__copyright {
+  .footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .footer__logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 5px;
     font-size: 0.75rem;
+    letter-spacing: -0.04em;
+    flex-shrink: 0;
+    transition: background-color 0.35s ease;
+  }
+
+  .footer__logo-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .footer__nav {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .footer__nav a {
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .footer__nav a:hover {
+    color: var(--color-accent);
+  }
+
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .footer__copy {
+    font-size: 0.68rem;
     font-weight: 300;
     color: var(--color-muted);
     letter-spacing: 0.04em;
+    opacity: 0.7;
   }
 
-  .contact__socials {
-    list-style: none;
+  .footer__social-row {
     display: flex;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
-  .contact__socials a {
+  .footer__social {
     display: flex;
     align-items: center;
     color: var(--color-muted);
     transition: color 0.2s ease;
   }
 
-  .contact__socials a:hover { color: var(--color-accent); }
+  .footer__social:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .footer__top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer__nav {
+      gap: 1.25rem;
+    }
+  }
 </style>

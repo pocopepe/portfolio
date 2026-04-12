@@ -1,0 +1,334 @@
+---
+---
+
+<section id="education" class="education">
+  <div class="container-portfolio">
+    <span class="section-label">Education</span>
+
+    <div class="edu__grid">
+
+      <!-- Main card -->
+      <article class="edu__card edu__card--main">
+        <div class="edu__card-top">
+          <div class="edu__institution-block">
+            <span class="edu__badge">B.Tech</span>
+            <h3 class="edu__institution">Vellore Institute of Technology</h3>
+            <span class="edu__location">Chennai, Tamil Nadu</span>
+          </div>
+          <div class="edu__meta">
+            <span class="edu__gpa">8.16</span>
+            <span class="edu__gpa-label">GPA</span>
+          </div>
+        </div>
+
+        <div class="edu__card-mid">
+          <p class="edu__degree">Electronics &amp; Communication Engineering</p>
+          <span class="edu__period">Aug 2023 – Present · Expected 2027</span>
+        </div>
+
+        <ul class="edu__highlights">
+          <li>Systems architecture, kernel development &amp; embedded systems coursework</li>
+          <li>Research on quantum-chaotic steganography (BB84 + deep learning)</li>
+          <li>Research Lead at OSPC · Developer at Code Chef · Linux Club CTF competitor</li>
+        </ul>
+      </article>
+
+      <!-- Side: focus areas -->
+      <div class="edu__side">
+        <div class="edu__focus-card">
+          <span class="edu__focus-label">Core focus</span>
+          <ul class="edu__focus-list">
+            <li>
+              <span class="edu__focus-icon">⬡</span>
+              Systems Programming
+            </li>
+            <li>
+              <span class="edu__focus-icon">⬡</span>
+              Full-Stack Development
+            </li>
+            <li>
+              <span class="edu__focus-icon">⬡</span>
+              Cryptography &amp; Security
+            </li>
+            <li>
+              <span class="edu__focus-icon">⬡</span>
+              Machine Learning
+            </li>
+            <li>
+              <span class="edu__focus-icon">⬡</span>
+              Embedded &amp; Firmware
+            </li>
+          </ul>
+        </div>
+
+        <div class="edu__stat-row">
+          <div class="edu__stat">
+            <span class="edu__stat-num">2nd</span>
+            <span class="edu__stat-label">Year</span>
+          </div>
+          <div class="edu__stat-divider"></div>
+          <div class="edu__stat">
+            <span class="edu__stat-num">8.16</span>
+            <span class="edu__stat-label">GPA</span>
+          </div>
+          <div class="edu__stat-divider"></div>
+          <div class="edu__stat">
+            <span class="edu__stat-num">'27</span>
+            <span class="edu__stat-label">Graduating</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .education {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .edu__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .edu__grid {
+      grid-template-columns: 1fr 340px;
+      gap: 2rem;
+      align-items: start;
+    }
+  }
+
+  /* Main card */
+  .edu__card--main {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    transition: background-color 0.35s ease;
+  }
+
+  .edu__card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .edu__institution-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .edu__badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-bg);
+    background-color: var(--color-accent);
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    width: fit-content;
+    margin-bottom: 0.3rem;
+    transition: background-color 0.35s ease;
+  }
+
+  .edu__institution {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    line-height: 1.2;
+  }
+
+  .edu__location {
+    font-size: 0.72rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* GPA callout */
+  .edu__meta {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.1rem;
+  }
+
+  .edu__gpa {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 200;
+    letter-spacing: -0.04em;
+    color: var(--color-accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.35s ease;
+  }
+
+  .edu__gpa-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* Mid row */
+  .edu__card-mid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .edu__degree {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: 0.01em;
+  }
+
+  .edu__period {
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Highlights */
+  .edu__highlights {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .edu__highlights li {
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--color-text);
+    opacity: 0.75;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .edu__highlights li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    opacity: 0.6;
+  }
+
+  /* Side panel */
+  .edu__side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .edu__focus-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    transition: background-color 0.35s ease;
+  }
+
+  .edu__focus-label {
+    display: block;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 1.1rem;
+  }
+
+  .edu__focus-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .edu__focus-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .edu__focus-list li:hover {
+    color: var(--color-accent);
+  }
+
+  .edu__focus-icon {
+    font-size: 0.55rem;
+    color: var(--color-accent);
+    opacity: 0.7;
+    flex-shrink: 0;
+    transition: color 0.35s ease;
+  }
+
+  /* Stat row */
+  .edu__stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    transition: background-color 0.35s ease;
+  }
+
+  .edu__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .edu__stat-num {
+    font-size: 1.4rem;
+    font-weight: 200;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .edu__stat-label {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .edu__stat-divider {
+    width: 1px;
+    height: 2rem;
+    background-color: var(--color-border);
+  }
+</style>

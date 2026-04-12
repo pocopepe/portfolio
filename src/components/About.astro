@@ -6,31 +6,45 @@
     <span class="section-label">About</span>
 
     <div class="about__grid">
+
+      <!-- Portrait -->
       <div class="about__portrait">
         <div class="about__portrait-inner">
-          <!-- Placeholder silhouette — replace src with a real photo -->
-          <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="100" cy="72" r="42" fill="currentColor" opacity="0.18"/>
-            <path d="M20 220 C20 160 180 160 180 220" fill="currentColor" opacity="0.18"/>
-          </svg>
+          <img
+            src="/images/portrait.jpg"
+            alt="Viju Sanjai"
+            loading="lazy"
+            decoding="async"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div class="about__portrait-fallback" style="display:none">
+            <span>VS</span>
+          </div>
         </div>
       </div>
 
-      <div class="about__text">
-        <h2 class="about__heading">A little about me.</h2>
-        <p class="about__bio">
-          I'm Viju Sanjai, a B.Tech student in Electronics and Communication at VIT Chennai,
-          building at the intersection of systems programming and full-stack development.
-          I care about writing software that's fast, correct, and deliberately crafted —
-          whether that's a GPU video pipeline or a browser-native PDF editor.
-        </p>
-        <p class="about__bio">
-          Previously a software development intern at Lagoon Technologies, where I worked
-          on enterprise tooling in C# and .NET. Outside of work I research quantum-chaotic
-          steganography, mentor students on Git and open-source practices, and dig into
-          low-level challenges through CTFs.
-        </p>
+      <!-- Right: all text content -->
+      <div class="about__content">
 
+        <h2 class="about__heading">A little about me.</h2>
+
+        <!-- Two-col bio -->
+        <div class="about__bios">
+          <p class="about__bio">
+            I'm Viju Sanjai, a B.Tech student in Electronics and Communication at VIT Chennai,
+            building at the intersection of systems programming and full-stack development.
+            I care about writing software that's fast, correct, and deliberately crafted —
+            whether that's a GPU video pipeline or a browser-native PDF editor.
+          </p>
+          <p class="about__bio">
+            Previously a software development intern at Lagoon Technologies, working on
+            enterprise tooling in C# and .NET. Outside of work I research quantum-chaotic
+            steganography, mentor students on Git and open-source practices, and dig into
+            low-level challenges through CTFs.
+          </p>
+        </div>
+
+        <!-- Tags — same width as bios -->
         <ul class="about__tags">
           <li>Rust</li>
           <li>TypeScript</li>
@@ -45,6 +59,7 @@
           <li>AWS</li>
           <li>Linux</li>
         </ul>
+
       </div>
     </div>
   </div>
@@ -56,16 +71,17 @@
     border-bottom: 1px solid var(--color-border);
   }
 
+  /* Outer: portrait | content */
   .about__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   @media (min-width: 768px) {
     .about__grid {
-      grid-template-columns: 300px 1fr;
-      gap: 5rem;
+      grid-template-columns: 280px 1fr;
+      gap: 4rem;
       align-items: start;
     }
   }
@@ -73,69 +89,98 @@
   /* Portrait */
   .about__portrait {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
+  }
+
+  @media (max-width: 767px) {
+    .about__portrait {
+      max-width: 180px;
+    }
   }
 
   .about__portrait-inner {
     width: 100%;
-    aspect-ratio: 1;
+    aspect-ratio: 3 / 4;
     background-color: var(--color-surface);
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     color: var(--color-text);
     transition: background-color 0.35s ease;
   }
 
-  .about__portrait-inner svg {
-    width: 60%;
-    height: auto;
+  .about__portrait-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(15%);
+    transition: filter 0.4s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
   }
 
-  /* Text */
+  .about__portrait:hover .about__portrait-inner img {
+    filter: grayscale(0%);
+    transform: scale(1.03);
+  }
+
+  /* Right content column */
+  .about__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Heading */
   .about__heading {
     font-size: clamp(1.8rem, 4vw, 2.8rem);
     font-weight: 200;
     letter-spacing: -0.02em;
-    line-height: 1.15;
+    line-height: 1.1;
     color: var(--color-text);
-    margin-bottom: 1.5rem;
+  }
+
+  /* Bio — two equal columns on md+ */
+  .about__bios {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .about__bios {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
   }
 
   .about__bio {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 300;
     line-height: 1.8;
     color: var(--color-text);
-    opacity: 0.85;
-    margin-bottom: 1rem;
-    max-width: 54ch;
+    opacity: 0.8;
+    margin: 0;
   }
 
-  .about__bio:last-of-type {
-    margin-bottom: 2rem;
-  }
-
-  /* Tags */
+  /* Tags — wraps to match full content width */
   .about__tags {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .about__tags li {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 400;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-muted);
     border: 1px solid var(--color-border);
-    padding: 0.3rem 0.75rem;
+    padding: 0.3rem 0.7rem;
     border-radius: 2px;
     transition: color 0.2s ease, border-color 0.2s ease;
+    cursor: default;
   }
 
   .about__tags li:hover {

@@ -16,6 +16,34 @@
         <li><a href="/#experience">Experience</a></li>
         <li><a href="/#about">About</a></li>
         <li><a href="/contact">Contact</a></li>
+        <li class="nav__resume-wrap">
+          <button class="nav__resume-btn" id="resume-btn" aria-haspopup="true" aria-expanded="false">
+            Résumé
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="nav__resume-chevron">
+              <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <ul class="nav__resume-dropdown" id="resume-dropdown" role="menu">
+            <li role="menuitem">
+              <a href="/resume-sde.pdf" target="_blank" rel="noopener noreferrer" download>
+                <span class="nav__resume-type">SDE</span>
+                Software Engineering
+              </a>
+            </li>
+            <li role="menuitem">
+              <a href="/resume-systems.pdf" target="_blank" rel="noopener noreferrer" download>
+                <span class="nav__resume-type">SYS</span>
+                Systems / Low-level
+              </a>
+            </li>
+            <li role="menuitem">
+              <a href="/resume-webdev.pdf" target="_blank" rel="noopener noreferrer" download>
+                <span class="nav__resume-type">WEB</span>
+                Web Development
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
 
       <!-- Theme toggle: contrast half-circle icon -->
@@ -58,6 +86,21 @@
   toggleBtn?.addEventListener('click', () => {
     const current = html.dataset.theme ?? 'light';
     applyTheme(current === 'light' ? 'dark' : 'light');
+  });
+
+  // Resume dropdown
+  const resumeBtn = document.getElementById('resume-btn');
+  const resumeDropdown = document.getElementById('resume-dropdown');
+
+  resumeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = resumeDropdown?.classList.toggle('is-open');
+    resumeBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  document.addEventListener('click', () => {
+    resumeDropdown?.classList.remove('is-open');
+    resumeBtn?.setAttribute('aria-expanded', 'false');
   });
 
   // Mobile menu
@@ -262,6 +305,94 @@
 
   .nav__overlay-link:hover {
     color: var(--color-accent);
+  }
+
+  /* Resume dropdown */
+  .nav__resume-wrap {
+    position: relative;
+  }
+
+  .nav__resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+
+  .nav__resume-btn:hover {
+    color: var(--color-accent);
+  }
+
+  .nav__resume-chevron {
+    transition: transform 0.25s ease;
+  }
+
+  .nav__resume-btn[aria-expanded="true"] .nav__resume-chevron {
+    transform: rotate(180deg);
+  }
+
+  .nav__resume-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    list-style: none;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+    min-width: 200px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    z-index: 100;
+  }
+
+  .nav__resume-dropdown.is-open {
+    display: block;
+  }
+
+  .nav__resume-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__resume-dropdown li:last-child a {
+    border-bottom: none;
+  }
+
+  .nav__resume-dropdown a:hover {
+    background-color: var(--color-surface);
+    color: var(--color-accent);
+  }
+
+  .nav__resume-type {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--color-bg);
+    background-color: var(--color-accent);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    flex-shrink: 0;
+    transition: background-color 0.35s ease;
   }
 
   @media (max-width: 767px) {

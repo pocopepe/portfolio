@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="533" viewBox="0 0 400 533">
+  <rect width="400" height="533" fill="#1e1c1a"/>
+  <text x="200" y="280" text-anchor="middle" font-family="system-ui" font-size="14" fill="#6b6560" letter-spacing="0.1em">ADD PORTRAIT</text>
+  <text x="200" y="300" text-anchor="middle" font-family="system-ui" font-size="11" fill="#6b6560" letter-spacing="0.08em">public/images/portrait.jpg</text>
+</svg>

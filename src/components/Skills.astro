@@ -1,0 +1,215 @@
+---
+const skillGroups = [
+  {
+    area: 'Systems & Low-Level',
+    description: 'Close to the metal',
+    color: 'var(--color-accent)',
+    skills: [
+      { name: 'Rust',          level: 92 },
+      { name: 'C / C++',       level: 80 },
+      { name: 'eBPF / aya',    level: 72 },
+      { name: 'Linux',         level: 85 },
+      { name: 'WebGPU / WGSL', level: 74 },
+      { name: 'ACPI / EFI',    level: 62 },
+    ],
+  },
+  {
+    area: 'Web & Full-Stack',
+    description: 'From edge to interface',
+    color: 'var(--color-highlight)',
+    skills: [
+      { name: 'TypeScript',        level: 92 },
+      { name: 'React',             level: 88 },
+      { name: 'Hono',              level: 82 },
+      { name: 'Astro',             level: 78 },
+      { name: 'Cloudflare Workers', level: 80 },
+      { name: 'Supabase',          level: 68 },
+    ],
+  },
+  {
+    area: 'Runtime & Languages',
+    description: 'What I actually ship in',
+    color: 'var(--color-muted)',
+    skills: [
+      { name: 'JavaScript', level: 90 },
+      { name: 'Bun',        level: 78 },
+      { name: 'C (FFmpeg)', level: 75 },
+      { name: 'Assembly / ASL', level: 55 },
+    ],
+  },
+  {
+    area: 'Tooling & Infra',
+    description: 'Infrastructure and workflow',
+    color: 'var(--color-accent)',
+    skills: [
+      { name: 'Git',      level: 92 },
+      { name: 'Docker',   level: 76 },
+      { name: 'Tauri',    level: 80 },
+      { name: 'Wrangler', level: 78 },
+      { name: 'Vite',     level: 82 },
+    ],
+  },
+];
+---
+
+<section id="skills" class="skills">
+  <div class="container-portfolio">
+    <span class="section-label">Skills</span>
+
+    <div class="skills__grid">
+      {skillGroups.map((group) => (
+        <div class="skills__group">
+          <div class="skills__group-header">
+            <span class="skills__area" style={`--group-color: ${group.color}`}>
+              {group.area}
+            </span>
+            <span class="skills__desc">{group.description}</span>
+          </div>
+
+          <ul class="skills__list">
+            {group.skills.map((skill) => (
+              <li class="skills__item">
+                <div class="skills__item-top">
+                  <span class="skills__name">{skill.name}</span>
+                  <span class="skills__pct">{skill.level}</span>
+                </div>
+                <div class="skills__bar-track">
+                  <div
+                    class="skills__bar-fill"
+                    style={`--fill: ${skill.level}%; --color: ${group.color}`}
+                    data-fill={skill.level}
+                  ></div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .skills__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 4rem;
+  }
+
+  @media (max-width: 768px) {
+    .skills__grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* Group */
+  .skills__group-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .skills__area {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--group-color);
+    transition: color 0.35s ease;
+  }
+
+  .skills__desc {
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--color-muted);
+  }
+
+  /* Skill rows */
+  .skills__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .skills__item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.35rem;
+  }
+
+  .skills__name {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: 0.01em;
+  }
+
+  .skills__pct {
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .skills__item:hover .skills__pct {
+    opacity: 1;
+  }
+
+  /* Bar */
+  .skills__bar-track {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .skills__bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color);
+    border-radius: 999px;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .skills__bar-fill.is-animated {
+    width: var(--fill);
+  }
+</style>
+
+<script>
+  // Animate bars when scrolled into view
+  const fills = document.querySelectorAll<HTMLElement>('.skills__bar-fill');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Slight stagger per bar using index
+          const el = entry.target as HTMLElement;
+          const index = [...fills].indexOf(el);
+          setTimeout(() => {
+            el.classList.add('is-animated');
+          }, index * 40);
+          observer.unobserve(el);
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  fills.forEach((el) => observer.observe(el));
+</script>
