@@ -1,0 +1,182 @@
+---
+---
+
+<section id="experience" class="experience">
+  <div class="container-portfolio">
+    <span class="section-label">Experience</span>
+
+    <div class="exp__list">
+
+      <!-- Internship -->
+      <article class="exp__item">
+        <div class="exp__meta">
+          <span class="exp__period">Sep 2024 – Feb 2025</span>
+          <span class="exp__location">Chennai, TN</span>
+        </div>
+        <div class="exp__body">
+          <div class="exp__header">
+            <h3 class="exp__role">Software Development Intern</h3>
+            <span class="exp__company">Lagoon Technologies</span>
+          </div>
+          <ul class="exp__points">
+            <li>Engineered and optimised internal enterprise tools in <strong>C# and .NET</strong> within an Agile environment.</li>
+            <li>Conducted architectural analysis of legacy systems, identifying bottlenecks to improve maintainability and release velocity.</li>
+            <li>Collaborated in daily SDLC discussions to align software architecture with enterprise scalability requirements.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Research -->
+      <article class="exp__item">
+        <div class="exp__meta">
+          <span class="exp__period">Jan 2025 – Present</span>
+          <span class="exp__location">Research</span>
+        </div>
+        <div class="exp__body">
+          <div class="exp__header">
+            <h3 class="exp__role">Adaptive Quantum-Chaotic Steganography</h3>
+            <span class="exp__company">Independent Research</span>
+          </div>
+          <ul class="exp__points">
+            <li>Developing an AI-assisted BB84 steganography protocol integrating Bernstein–Vazirani circuits and an Improved Logistic Map for chaotic diffusion.</li>
+            <li>Training a QBER classifier (1D CNN + Transformer) reaching <strong>AUROC 0.97</strong> for detecting partial intercept-and-resend attacks on noisy IBM-style backends.</li>
+            <li>Using a Deep Q-Learning agent to tune ILM parameters targeting higher NPCR/UACI with ~1.5% qubit overhead.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Leadership row -->
+      <article class="exp__item">
+        <div class="exp__meta">
+          <span class="exp__period">2023 – Present</span>
+          <span class="exp__location">VIT Chennai</span>
+        </div>
+        <div class="exp__body">
+          <div class="exp__header">
+            <h3 class="exp__role">Community & Leadership</h3>
+            <span class="exp__company">OSPC · Code Chef · Linux Club · Google Developers</span>
+          </div>
+          <ul class="exp__points">
+            <li><strong>OSPC Research Lead</strong> — Mentored 50+ students on Git, collaborative development, and kernel-level fundamentals.</li>
+            <li><strong>Code Chef Developer</strong> — Built and maintained the competitive programming platform with Express.js and Cloudflare.</li>
+            <li><strong>Linux Club</strong> — Competed in campus-wide CTF tackling system-level and cryptographic challenges.</li>
+            <li><strong>Google Developers Club</strong> — Led front-end development for the campus portal, ran web technology workshops.</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .experience {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .exp__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .exp__item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--color-border);
+    transition: background-color 0.2s ease;
+  }
+
+  .exp__item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  @media (min-width: 768px) {
+    .exp__item {
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
+  /* Meta column */
+  .exp__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-top: 0.15rem;
+  }
+
+  .exp__period {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    letter-spacing: 0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .exp__location {
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    opacity: 0.6;
+  }
+
+  /* Body column */
+  .exp__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .exp__role {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .exp__company {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--color-accent);
+    letter-spacing: 0.02em;
+  }
+
+  .exp__points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .exp__points li {
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--color-text);
+    opacity: 0.8;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .exp__points li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    opacity: 0.7;
+  }
+
+  .exp__points strong {
+    font-weight: 500;
+    color: var(--color-text);
+    opacity: 1;
+  }
+</style>

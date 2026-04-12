@@ -1,0 +1,379 @@
+---
+---
+
+<section id="contact" class="contact">
+  <div class="container-portfolio contact__inner">
+
+    <!-- Top: heading + email -->
+    <div class="contact__top">
+      <span class="section-label">Contact</span>
+      <h2 class="contact__cta">
+        <span class="word-wrap"><span class="word contact-word">Let's</span></span>
+        <span class="word-wrap"><span class="word contact-word">work</span></span>
+        <span class="word-wrap"><span class="word contact-word">together.</span></span>
+      </h2>
+      <a href="mailto:avijusanjai@gmail.com" class="contact__email">
+        avijusanjai@gmail.com
+      </a>
+    </div>
+
+    <!-- Form -->
+    <div class="contact__form-wrap">
+      <form id="contact-form" class="cform" novalidate>
+        <input type="hidden" name="access_key" value="76ad94d5-5134-47d7-90ef-85261955a1e1" />
+        <input type="hidden" name="subject" value="New message from portfolio" />
+        <input type="checkbox" name="botcheck" style="display:none" />
+
+        <div class="cform__row">
+          <div class="cform__group">
+            <label class="cform__label" for="cf-name">Name</label>
+            <input class="cform__input" type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
+          </div>
+          <div class="cform__group">
+            <label class="cform__label" for="cf-email">Email</label>
+            <input class="cform__input" type="email" id="cf-email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="cform__group">
+          <label class="cform__label" for="cf-message">Message</label>
+          <textarea class="cform__input cform__textarea" id="cf-message" name="message" placeholder="What's on your mind?" rows="5" required></textarea>
+        </div>
+
+        <div class="cform__footer">
+          <p class="cform__error" id="cf-error" aria-live="polite"></p>
+          <button type="submit" class="cform__submit" id="cf-submit">
+            <span class="cform__submit-label">Send message</span>
+            <svg class="cform__submit-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="7" y1="17" x2="17" y2="7"/>
+              <polyline points="7 7 17 7 17 17"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <div class="cform__success" id="cf-success" aria-live="polite">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <p class="cform__success-heading">Message sent.</p>
+        <p class="cform__success-sub">I'll get back to you soon.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="contact__footer">
+      <p class="contact__copyright">&copy; 2025 Viju Sanjai</p>
+      <ul class="contact__socials">
+        <li>
+          <a href="https://github.com/pocopepe" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://linkedin.com/in/vijusanjai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </footer>
+
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('cf-submit') as HTMLButtonElement;
+  const successEl = document.getElementById('cf-success') as HTMLElement;
+  const errorEl = document.getElementById('cf-error') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = (form.querySelector('#cf-name') as HTMLInputElement).value.trim();
+    const email = (form.querySelector('#cf-email') as HTMLInputElement).value.trim();
+    const message = (form.querySelector('#cf-message') as HTMLTextAreaElement).value.trim();
+
+    if (!name || !email || !message) {
+      errorEl.textContent = 'Please fill in all fields.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errorEl.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('is-loading');
+    errorEl.textContent = '';
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(form),
+      });
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        form.style.display = 'none';
+        successEl.classList.add('is-visible');
+      } else {
+        errorEl.textContent = json.message ?? 'Something went wrong — email me directly.';
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+      }
+    } catch {
+      errorEl.textContent = 'Network error — email avijusanjai@gmail.com directly.';
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('is-loading');
+    }
+  });
+</script>
+
+<style>
+  .contact {
+    padding-top: clamp(5rem, 10vw, 9rem);
+  }
+
+  .contact__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  /* Top: heading + email */
+  .contact__top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .contact__cta {
+    font-size: clamp(3rem, 9vw, 7.5rem);
+    font-weight: 200;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--color-text);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.25em;
+  }
+
+  .contact__email {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    font-weight: 300;
+    color: var(--color-accent);
+    letter-spacing: -0.01em;
+    padding-bottom: 2px;
+    align-self: flex-start;
+  }
+
+  .contact__email::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact__email:hover::after { transform: scaleX(1); }
+
+  /* Form */
+  .contact__form-wrap {
+    width: 100%;
+    max-width: 680px;
+  }
+
+  .cform {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .cform__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 500px) {
+    .cform__row { grid-template-columns: 1fr; }
+  }
+
+  .cform__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cform__label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .cform__input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 300;
+    padding: 0.6rem 0;
+    outline: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+    transition: border-color 0.25s ease;
+  }
+
+  .cform__input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.45;
+  }
+
+  .cform__input:focus {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .cform__textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.6;
+  }
+
+  .cform__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cform__error {
+    font-size: 0.78rem;
+    color: #c0392b;
+    min-height: 1em;
+    flex: 1;
+  }
+
+  /* Submit */
+  .cform__submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.75rem;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.2s ease;
+  }
+
+  .cform__submit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.12);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cform__submit:hover::before { transform: scaleX(1); }
+
+  .cform__submit-arrow {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cform__submit:hover .cform__submit-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .cform__submit.is-loading { opacity: 0.65; cursor: not-allowed; }
+  .cform__submit.is-loading .cform__submit-arrow { opacity: 0; }
+
+  /* Success */
+  .cform__success {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--color-text);
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+  }
+
+  .cform__success.is-visible { display: flex; }
+
+  .cform__success svg {
+    color: var(--color-accent);
+    margin-bottom: 0.25rem;
+  }
+
+  .cform__success-heading {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  .cform__success-sub {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: var(--color-muted);
+  }
+
+  /* Footer */
+  .contact__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contact__copyright {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .contact__socials {
+    list-style: none;
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .contact__socials a {
+    display: flex;
+    align-items: center;
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .contact__socials a:hover { color: var(--color-accent); }
+</style>

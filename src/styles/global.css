@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* ── Light theme (default) ── */
+[data-theme="light"],
+:root {
+  --color-bg: #f7f0e6;
+  --color-surface: #e8d5b6;
+  --color-surface-hover: #ddc9a3;
+  --color-border: #d8c9b0;
+  --color-text: #2a1a0e;
+  --color-muted: #847464;
+  --color-accent: #93471e;
+  --color-highlight: #d3a666;
+  --overlay-bg: rgba(42, 26, 14, 0.85);
+}
+
+/* ── Dark theme ── */
+[data-theme="dark"] {
+  --color-bg: #111010;
+  --color-surface: #1e1c1a;
+  --color-surface-hover: #28251f;
+  --color-border: #2e2b28;
+  --color-text: #f0ece4;
+  --color-muted: #6b6560;
+  --color-accent: #d3a666;
+  --color-highlight: #e8b97a;
+  --overlay-bg: rgba(0, 0, 0, 0.85);
+}
+
+@theme {
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+}
+
+/* ── Base resets ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  transition: background-color 0.35s ease, color 0.35s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Layout ── */
+.container-portfolio {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* ── Typography utilities ── */
+.section-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 2.5rem;
+}
+
+/* ── Word-split animation wrapper ── */
+.word-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.word {
+  display: inline-block;
+}

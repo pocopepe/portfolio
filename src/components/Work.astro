@@ -1,0 +1,231 @@
+---
+import { projects } from '../data/projects';
+---
+
+<section id="work" class="work">
+  <div class="container-portfolio">
+    <span class="section-label">Selected Work</span>
+
+    <ul class="work__list">
+      {projects.map((project, i) => (
+        <li class="work__item">
+          <a
+            href={project.link ?? '#'}
+            class="work__row"
+            target={project.link ? '_blank' : undefined}
+            rel={project.link ? 'noopener noreferrer' : undefined}
+            data-has-link={project.link ? 'true' : 'false'}
+          >
+            {/* Sliding background fill */}
+            <span class="work__fill" aria-hidden="true"></span>
+
+            {/* Index number */}
+            <span class="work__index">0{i + 1}</span>
+
+            {/* Title + tags */}
+            <div class="work__center">
+              <span class="work__title">{project.title}</span>
+              <span class="work__tags">
+                {project.tags.join(' · ')}
+              </span>
+            </div>
+
+            {/* Right meta */}
+            <div class="work__right">
+              <span class="work__category">{project.category}</span>
+              <span class="work__year">{project.year}</span>
+              {project.link && (
+                <svg class="work__arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="7" y1="17" x2="17" y2="7"/>
+                  <polyline points="7 7 17 7 17 17"/>
+                </svg>
+              )}
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .work {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* List */
+  .work__list {
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .work__item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Row */
+  .work__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 2rem;
+    padding-inline: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text);
+    overflow: hidden;
+    cursor: pointer;
+    transition: color 0.4s ease;
+  }
+
+  /* Sliding fill — sweeps left to right on hover */
+  .work__fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+
+  .work__row:hover .work__fill {
+    transform: scaleX(1);
+  }
+
+  /* Flip text to contrast on hover */
+  .work__row:hover {
+    color: var(--color-bg);
+  }
+
+  /* All direct children sit above the fill */
+  .work__index,
+  .work__center,
+  .work__right {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Index */
+  .work__index {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s ease;
+    align-self: start;
+    padding-top: 0.35rem;
+  }
+
+  .work__row:hover .work__index {
+    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  }
+
+  /* Center — title + tags */
+  .work__center {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .work__title {
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: letter-spacing 0.4s ease;
+  }
+
+  .work__row:hover .work__title {
+    letter-spacing: -0.01em;
+  }
+
+  .work__tags {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .work__row:hover .work__tags {
+    color: color-mix(in srgb, var(--color-bg) 75%, transparent);
+  }
+
+  /* Right meta */
+  .work__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .work__category {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.3s ease;
+  }
+
+  .work__row:hover .work__category {
+    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  }
+
+  .work__year {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s ease;
+  }
+
+  .work__row:hover .work__year {
+    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  }
+
+  /* Arrow */
+  .work__arrow {
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+  }
+
+  .work__row:hover .work__arrow {
+    transform: translate(4px, -4px);
+  }
+
+  /* Mobile: collapse right meta, shrink grid */
+  @media (max-width: 640px) {
+    .work__row {
+      grid-template-columns: 2rem 1fr;
+      gap: 1rem;
+      padding-block: 1.5rem;
+    }
+
+    .work__right {
+      display: none;
+    }
+
+    .work__title {
+      white-space: normal;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    .work__category {
+      display: none;
+    }
+  }
+</style>

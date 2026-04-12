@@ -1,0 +1,276 @@
+---
+---
+
+<header class="nav">
+  <nav class="container-portfolio nav__inner">
+    <a href="/" class="nav__logo" aria-label="Viju Sanjai — home">
+      <span class="logo-mark" aria-hidden="true">
+        <span class="logo-v">V</span><span class="logo-s">S</span>
+      </span>
+      <span class="logo-name">Viju Sanjai</span>
+    </a>
+
+    <div class="nav__right">
+      <ul class="nav__links">
+        <li><a href="/#work">Work</a></li>
+        <li><a href="/#experience">Experience</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+
+      <!-- Theme toggle: contrast half-circle icon -->
+      <button class="theme-toggle" aria-label="Toggle theme" id="theme-toggle">
+        <svg class="icon-contrast" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 3a9 9 0 0 1 0 18V3z" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <!-- Mobile hamburger -->
+      <button class="nav__hamburger" aria-label="Open menu" id="nav-hamburger">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile overlay -->
+<div class="nav__overlay" id="nav-overlay">
+  <ul class="nav__overlay-links">
+    <li><a href="/#work" class="nav__overlay-link">Work</a></li>
+    <li><a href="/#experience" class="nav__overlay-link">Experience</a></li>
+    <li><a href="/#about" class="nav__overlay-link">About</a></li>
+    <li><a href="/contact" class="nav__overlay-link">Contact</a></li>
+  </ul>
+</div>
+
+<script>
+  // Theme toggle
+  const toggleBtn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  function applyTheme(theme: string) {
+    html.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+  }
+
+  toggleBtn?.addEventListener('click', () => {
+    const current = html.dataset.theme ?? 'light';
+    applyTheme(current === 'light' ? 'dark' : 'light');
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('nav-hamburger');
+  const overlay = document.getElementById('nav-overlay');
+
+  hamburger?.addEventListener('click', () => {
+    const isOpen = overlay?.classList.toggle('is-open');
+    hamburger.classList.toggle('is-open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  overlay?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      overlay.classList.remove('is-open');
+      hamburger?.classList.remove('is-open');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--color-border);
+    background-color: color-mix(in srgb, var(--color-bg) 85%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background-color 0.35s ease, border-color 0.35s ease;
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  /* Badge mark */
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: background-color 0.35s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1);
+    letter-spacing: -0.04em;
+  }
+
+  .nav__logo:hover .logo-mark {
+    transform: rotate(-6deg) scale(1.08);
+  }
+
+  .logo-v {
+    font-size: 0.8rem;
+    font-weight: 200;
+  }
+
+  .logo-s {
+    font-size: 0.8rem;
+    font-weight: 800;
+  }
+
+  .logo-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .nav__logo:hover .logo-name {
+    color: var(--color-accent);
+  }
+
+  .nav__right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .nav__links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav__links a {
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    transition: color 0.2s ease;
+  }
+
+  .nav__links a:hover {
+    color: var(--color-accent);
+  }
+
+  /* Theme toggle */
+  .theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-muted);
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s ease;
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-accent);
+  }
+
+  /* Contrast icon — rotates 180deg in dark mode to flip filled/empty halves */
+  .icon-contrast {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] .icon-contrast {
+    transform: rotate(180deg);
+  }
+
+  /* Hamburger */
+  .nav__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .nav__hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background-color: var(--color-text);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+
+  .nav__hamburger.is-open span:first-child {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  .nav__hamburger.is-open span:last-child {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Mobile overlay */
+  .nav__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background-color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav__overlay.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .nav__overlay-links {
+    list-style: none;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .nav__overlay-link {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    font-weight: 200;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .nav__overlay-link:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 767px) {
+    .nav__links {
+      display: none;
+    }
+
+    .nav__hamburger {
+      display: flex;
+    }
+  }
+</style>

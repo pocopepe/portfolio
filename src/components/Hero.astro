@@ -1,0 +1,309 @@
+---
+---
+
+<section class="hero">
+  <div class="container-portfolio hero__container">
+
+    <!-- Top bar: label + availability -->
+    <div class="hero__topbar">
+      <p class="hero__eyebrow section-label">Portfolio · 2025</p>
+      <div class="hero__status">
+        <span class="hero__dot" aria-hidden="true"></span>
+        Available for work
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="hero__body">
+      <div class="hero__name-block">
+        <h1 class="hero__name" aria-label="Viju Sanjai">
+          <span class="word-wrap"><span class="word">Viju</span></span>
+          <span class="word-wrap"><span class="word">Sanjai</span></span>
+        </h1>
+        <p class="hero__role">Software Developer</p>
+      </div>
+
+      <!-- Info strip: only visible desktop -->
+      <ul class="hero__info" aria-label="Quick info">
+        <li class="hero__info-item">
+          <span class="hero__info-label">Location</span>
+          <span class="hero__info-value">Chennai, India</span>
+        </li>
+        <li class="hero__info-item">
+          <span class="hero__info-label">Education</span>
+          <span class="hero__info-value">ECE @ VIT · '27</span>
+        </li>
+        <li class="hero__info-item">
+          <span class="hero__info-label">Focus</span>
+          <span class="hero__info-value">Systems &amp; Web</span>
+        </li>
+        <li class="hero__info-item">
+          <span class="hero__info-label">Currently</span>
+          <span class="hero__info-value">Building in public</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Bottom bar: scroll indicator + stats -->
+    <div class="hero__bottombar">
+      <div class="hero__scroll">
+        <div class="hero__scroll-line"></div>
+        <span class="hero__scroll-label">Scroll</span>
+      </div>
+
+      <ul class="hero__stats" aria-label="Stats">
+        <li class="hero__stat">
+          <span class="hero__stat-num">05</span>
+          <span class="hero__stat-label">Projects</span>
+        </li>
+        <li class="hero__stat-sep" aria-hidden="true">/</li>
+        <li class="hero__stat">
+          <span class="hero__stat-num">01</span>
+          <span class="hero__stat-label">Internship</span>
+        </li>
+        <li class="hero__stat-sep" aria-hidden="true">/</li>
+        <li class="hero__stat">
+          <span class="hero__stat-num">50+</span>
+          <span class="hero__stat-label">Mentored</span>
+        </li>
+        <li class="hero__stat-sep" aria-hidden="true">/</li>
+        <li class="hero__stat">
+          <span class="hero__stat-num">8.16</span>
+          <span class="hero__stat-label">GPA</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100dvh;
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 6rem;
+    padding-bottom: 2.5rem;
+    width: 100%;
+    gap: 2rem;
+  }
+
+  /* ── Top bar ── */
+  .hero__topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hero__eyebrow {
+    margin-bottom: 0;
+  }
+
+  /* Availability badge */
+  .hero__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    border: 1px solid var(--color-border);
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  }
+
+  /* Pulsing green dot */
+  .hero__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .hero__dot::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background-color: #4ade80;
+    opacity: 0.35;
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes ping {
+    0%   { transform: scale(1); opacity: 0.35; }
+    75%, 100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  /* ── Main body ── */
+  .hero__body {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+
+  .hero__name-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hero__name {
+    font-size: clamp(4.5rem, 13vw, 10.5rem);
+    font-weight: 200;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .hero__role {
+    font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+    font-weight: 300;
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+  }
+
+  /* Info strip */
+  .hero__info {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: flex-end;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .hero__info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .hero__info-label {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    opacity: 0.6;
+  }
+
+  .hero__info-value {
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 767px) {
+    .hero__info { display: none; }
+  }
+
+  /* ── Bottom bar ── */
+  .hero__bottombar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+    gap: 2rem;
+  }
+
+  /* Scroll indicator */
+  .hero__scroll {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 48px;
+    background-color: var(--color-accent);
+    transform-origin: top center;
+    transform: scaleY(0);
+  }
+
+  .hero__scroll-label {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  /* Stats row */
+  .hero__stats {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .hero__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+  }
+
+  .hero__stat-num {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero__stat-label {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .hero__stat-sep {
+    font-size: 1rem;
+    font-weight: 200;
+    color: var(--color-border);
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 500px) {
+    .hero__stat-sep,
+    .hero__stats li:nth-child(n+4) {
+      display: none;
+    }
+
+    .hero__stats {
+      gap: 1rem;
+    }
+  }
+</style>

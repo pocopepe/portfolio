@@ -1,0 +1,176 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props extends Project {}
+
+const { title, category, year, description, tags, link } = Astro.props;
+---
+
+<article class="card">
+  <a href={link ?? '#'} class="card__link" target={link ? '_blank' : undefined} rel={link ? 'noopener noreferrer' : undefined}>
+    <div class="card__image">
+      <div class="card__overlay">
+        <p class="card__description">{description}</p>
+        <ul class="card__tags">
+          {tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <footer class="card__meta">
+      <div class="card__meta-left">
+        <span class="card__title">{title}</span>
+        <span class="card__category">{category}</span>
+      </div>
+      <div class="card__meta-right">
+        <span class="card__year">{year}</span>
+        {link && (
+          <svg class="card__arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"/>
+            <polyline points="7 7 17 7 17 17"/>
+          </svg>
+        )}
+      </div>
+    </footer>
+  </a>
+</article>
+
+<style>
+  .card {
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--color-surface);
+    transition: background-color 0.35s ease;
+  }
+
+  .card__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Image area */
+  .card__image {
+    aspect-ratio: 4 / 3;
+    background-color: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.35s ease;
+  }
+
+  /* Subtle grain texture via pseudo-element */
+  .card__image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 30% 30%, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 60%),
+      radial-gradient(ellipse at 70% 70%, color-mix(in srgb, var(--color-highlight) 6%, transparent), transparent 60%);
+    transition: opacity 0.4s ease;
+  }
+
+  .card:hover .card__image::before {
+    opacity: 0.5;
+  }
+
+  /* Hover overlay */
+  .card__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--overlay-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .card:hover .card__overlay {
+    opacity: 1;
+  }
+
+  .card__description {
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: #f0ece4;
+    margin-bottom: 1rem;
+  }
+
+  .card__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .card__tags li {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(240, 236, 228, 0.65);
+    border: 1px solid rgba(240, 236, 228, 0.25);
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  /* Meta row */
+  .card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .card__meta-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .card__title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card__category {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .card__meta-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .card__year {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card__arrow {
+    color: var(--color-muted);
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .card:hover .card__arrow {
+    color: var(--color-accent);
+    transform: translate(2px, -2px);
+  }
+</style>

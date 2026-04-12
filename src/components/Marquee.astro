@@ -1,0 +1,99 @@
+---
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <!-- Two identical sets so the loop is seamless -->
+    {[0, 1].map(() => (
+      <ul class="marquee__list">
+        <li>Rust</li><li class="marquee__dot">·</li>
+        <li>TypeScript</li><li class="marquee__dot">·</li>
+        <li>WebGPU</li><li class="marquee__dot">·</li>
+        <li>WGSL</li><li class="marquee__dot">·</li>
+        <li>React</li><li class="marquee__dot">·</li>
+        <li>Hono</li><li class="marquee__dot">·</li>
+        <li>Tauri</li><li class="marquee__dot">·</li>
+        <li>Cloudflare R2</li><li class="marquee__dot">·</li>
+        <li>Docker</li><li class="marquee__dot">·</li>
+        <li>Linux</li><li class="marquee__dot">·</li>
+        <li>ACPI</li><li class="marquee__dot">·</li>
+        <li>OpenCore</li><li class="marquee__dot">·</li>
+        <li>Python</li><li class="marquee__dot">·</li>
+        <li>C / C++</li><li class="marquee__dot">·</li>
+        <li>FFmpeg</li><li class="marquee__dot">·</li>
+        <li>Ed25519</li><li class="marquee__dot">·</li>
+        <li>Supabase</li><li class="marquee__dot">·</li>
+        <li>AWS</li><li class="marquee__dot">·</li>
+        <li>Go</li><li class="marquee__dot">·</li>
+      </ul>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    background-color: var(--color-accent);
+    border-top: 1px solid color-mix(in srgb, var(--color-accent) 70%, #000);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 70%, #000);
+    padding-block: 0.85rem;
+    /* Subtle edge fades */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 6%,
+      black 94%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 6%,
+      black 94%,
+      transparent 100%
+    );
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 30s linear infinite;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .marquee__list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-inline: 1.25rem;
+  }
+
+  .marquee__list li {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-bg);
+    white-space: nowrap;
+  }
+
+  .marquee__dot {
+    opacity: 0.4;
+    font-size: 0.5rem !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+    }
+  }
+</style>

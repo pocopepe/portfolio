@@ -1,0 +1,418 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact — Viju Sanjai" description="Get in touch with Viju Sanjai.">
+  <div class="contact-page">
+    <div class="container-portfolio contact-page__inner">
+
+      <!-- Left: heading -->
+      <div class="contact-page__left">
+        <span class="section-label">Get in touch</span>
+        <h1 class="contact-page__heading">
+          <span class="word-wrap"><span class="word ch-word">Let's</span></span><br/>
+          <span class="word-wrap"><span class="word ch-word">talk.</span></span>
+        </h1>
+        <p class="contact-page__sub">
+          Have a project in mind, a question, or just want to say hello?
+          Fill in the form and I'll get back to you.
+        </p>
+        <a href="mailto:avijusanjai@gmail.com" class="contact-page__email">
+          avijusanjai@gmail.com
+        </a>
+      </div>
+
+      <!-- Right: form -->
+      <div class="contact-page__right">
+        <form id="contact-form" class="form" novalidate>
+          <!-- Web3Forms access key — replace with your key from web3forms.com -->
+          <input type="hidden" name="access_key" value="76ad94d5-5134-47d7-90ef-85261955a1e1" />
+          <input type="hidden" name="subject" value="New message from portfolio" />
+          <input type="checkbox" name="botcheck" style="display:none" />
+
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label" for="name">Name</label>
+              <input
+                class="form__input"
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your name"
+                required
+                autocomplete="name"
+              />
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="email">Email</label>
+              <input
+                class="form__input"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="your@email.com"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="subject">Subject</label>
+            <input
+              class="form__input"
+              type="text"
+              id="subject"
+              name="subject_line"
+              placeholder="What's this about?"
+            />
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="message">Message</label>
+            <textarea
+              class="form__input form__textarea"
+              id="message"
+              name="message"
+              placeholder="Tell me what you're thinking..."
+              rows="6"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="form__submit" id="submit-btn">
+            <span class="form__submit-text">Send message</span>
+            <span class="form__submit-arrow" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </button>
+        </form>
+
+        <!-- Success state -->
+        <div class="form__success" id="form-success" aria-live="polite">
+          <div class="form__success-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <p class="form__success-heading">Message sent.</p>
+          <p class="form__success-sub">Thanks — I'll be in touch soon.</p>
+        </div>
+
+        <!-- Error state -->
+        <p class="form__error" id="form-error" aria-live="polite"></p>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const successEl = document.getElementById('form-success') as HTMLElement;
+  const errorEl = document.getElementById('form-error') as HTMLElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Basic client-side validation
+    const name = (form.querySelector('#name') as HTMLInputElement).value.trim();
+    const email = (form.querySelector('#email') as HTMLInputElement).value.trim();
+    const message = (form.querySelector('#message') as HTMLTextAreaElement).value.trim();
+
+    if (!name || !email || !message) {
+      showError('Please fill in your name, email, and message.');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('Please enter a valid email address.');
+      return;
+    }
+
+    // Loading state
+    submitBtn.disabled = true;
+    submitBtn.classList.add('is-loading');
+    errorEl.textContent = '';
+
+    try {
+      const data = new FormData(form);
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: data,
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        form.style.display = 'none';
+        successEl.classList.add('is-visible');
+      } else {
+        showError(json.message ?? 'Something went wrong. Try emailing me directly.');
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('is-loading');
+      }
+    } catch {
+      showError('Network error. Try emailing me directly at avijusanjai@gmail.com');
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('is-loading');
+    }
+  });
+
+  function showError(msg: string) {
+    errorEl.textContent = msg;
+  }
+</script>
+
+<style>
+  .contact-page {
+    min-height: calc(100dvh - 64px);
+    padding-block: clamp(5rem, 10vw, 9rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .contact-page__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .contact-page__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+  }
+
+  /* ── Left ── */
+  .contact-page__left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-page__heading {
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 200;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .contact-page__sub {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--color-text);
+    opacity: 0.7;
+    max-width: 38ch;
+  }
+
+  .contact-page__email {
+    display: inline-flex;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    letter-spacing: 0.02em;
+    position: relative;
+    padding-bottom: 2px;
+  }
+
+  .contact-page__email::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contact-page__email:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ── Form ── */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 500px) {
+    .form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form__label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .form__input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 300;
+    padding: 0.65rem 0;
+    outline: none;
+    transition: border-color 0.25s ease;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+
+  .form__input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.5;
+  }
+
+  .form__input:focus {
+    border-bottom-color: var(--color-accent);
+  }
+
+  .form__textarea {
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.6;
+  }
+
+  /* Submit button */
+  .form__submit {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 2rem;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form__submit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.12);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .form__submit:hover::before {
+    transform: scaleX(1);
+  }
+
+  .form__submit:hover .form__submit-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .form__submit-arrow {
+    display: flex;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .form__submit.is-loading .form__submit-text::after {
+    content: '...';
+  }
+
+  .form__submit.is-loading .form__submit-text {
+    opacity: 0.7;
+  }
+
+  .form__submit.is-loading .form__submit-arrow {
+    opacity: 0;
+  }
+
+  .form__submit:disabled {
+    cursor: not-allowed;
+  }
+
+  /* Error */
+  .form__error {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #c0392b;
+    min-height: 1.2em;
+  }
+
+  /* Success */
+  .form__success {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 2.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+  }
+
+  .form__success.is-visible {
+    display: flex;
+  }
+
+  .form__success-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .form__success-heading {
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .form__success-sub {
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    line-height: 1.6;
+  }
+</style>
