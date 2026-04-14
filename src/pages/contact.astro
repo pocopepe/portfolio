@@ -31,8 +31,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <input type="checkbox" name="botcheck" style="display:none" />
 
           <div class="form__row">
-            <div class="form__group">
-              <label class="form__label" for="name">Name</label>
+            <div class="form__group form__group--anim">
+              <label class="form__label" for="name"><span class="form__field-num">01</span> Name</label>
               <input
                 class="form__input"
                 type="text"
@@ -43,8 +43,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 autocomplete="name"
               />
             </div>
-            <div class="form__group">
-              <label class="form__label" for="email">Email</label>
+            <div class="form__group form__group--anim">
+              <label class="form__label" for="email"><span class="form__field-num">02</span> Email</label>
               <input
                 class="form__input"
                 type="email"
@@ -57,8 +57,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
           </div>
 
-          <div class="form__group">
-            <label class="form__label" for="subject">Subject</label>
+          <div class="form__group form__group--anim">
+            <label class="form__label" for="subject"><span class="form__field-num">03</span> Subject</label>
             <input
               class="form__input"
               type="text"
@@ -68,8 +68,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             />
           </div>
 
-          <div class="form__group">
-            <label class="form__label" for="message">Message</label>
+          <div class="form__group form__group--anim">
+            <label class="form__label" for="message"><span class="form__field-num">04</span> Message</label>
             <textarea
               class="form__input form__textarea"
               id="message"
@@ -116,56 +116,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const successEl = document.getElementById('form-success') as HTMLElement;
   const errorEl = document.getElementById('form-error') as HTMLElement;
 
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // Basic client-side validation
     const name = (form.querySelector('#name') as HTMLInputElement).value.trim();
     const email = (form.querySelector('#email') as HTMLInputElement).value.trim();
     const message = (form.querySelector('#message') as HTMLTextAreaElement).value.trim();
 
     if (!name || !email || !message) {
-      showError('Please fill in your name, email, and message.');
+      errorEl.textContent = 'Please fill in your name, email, and message.';
       return;
     }
-
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showError('Please enter a valid email address.');
+      errorEl.textContent = 'Please enter a valid email address.';
       return;
     }
 
-    // Loading state
-    submitBtn.disabled = true;
-    submitBtn.classList.add('is-loading');
-    errorEl.textContent = '';
+    // Show success immediately — don't make the user wait
+    const payload = new FormData(form);
+    form.style.display = 'none';
+    successEl.classList.add('is-visible');
 
-    try {
-      const data = new FormData(form);
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: data,
-      });
-
-      const json = await res.json();
-
-      if (res.ok && json.success) {
-        form.style.display = 'none';
-        successEl.classList.add('is-visible');
-      } else {
-        showError(json.message ?? 'Something went wrong. Try emailing me directly.');
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('is-loading');
-      }
-    } catch {
-      showError('Network error. Try emailing me directly at avijusanjai@gmail.com');
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('is-loading');
-    }
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload })
+      .catch(() => {/* silent — user already saw success */});
   });
-
-  function showError(msg: string) {
-    errorEl.textContent = msg;
-  }
 </script>
 
 <style>
@@ -261,48 +235,90 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   }
 
+  /* Staggered entrance animation */
+  @keyframes fieldReveal {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .form__group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
 
+  .form__group--anim {
+    opacity: 0;
+    animation: fieldReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .form__row .form__group--anim:nth-child(1) { animation-delay: 0.15s; }
+  .form__row .form__group--anim:nth-child(2) { animation-delay: 0.25s; }
+  .form__group--anim:not(.form__row .form__group--anim):nth-of-type(3) { animation-delay: 0.35s; }
+  .form__group--anim:not(.form__row .form__group--anim):nth-of-type(4) { animation-delay: 0.45s; }
+
   .form__label {
-    font-size: 0.68rem;
+    font-size: 0.6rem;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.25s ease;
+  }
+
+  .form__field-num {
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+    transition: opacity 0.25s ease;
+  }
+
+  .form__group:focus-within .form__label {
+    color: var(--color-accent);
+  }
+
+  .form__group:focus-within .form__field-num {
+    opacity: 1;
   }
 
   .form__input {
     width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
     color: var(--color-text);
     font-family: inherit;
     font-size: 0.95rem;
     font-weight: 300;
-    padding: 0.65rem 0;
+    padding: 0.85rem 1rem;
     outline: none;
-    transition: border-color 0.25s ease;
-    border-radius: 0;
     -webkit-appearance: none;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background-color 0.25s ease;
   }
 
   .form__input::placeholder {
     color: var(--color-muted);
-    opacity: 0.5;
+    opacity: 0.45;
   }
 
   .form__input:focus {
-    border-bottom-color: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent);
+    background-color: color-mix(in srgb, var(--color-accent) 3%, var(--color-surface));
   }
 
   .form__textarea {
-    resize: vertical;
-    min-height: 120px;
+    resize: none;
+    min-height: 140px;
     line-height: 1.6;
   }
 

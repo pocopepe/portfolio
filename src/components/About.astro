@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import portrait from '../assets/images/portrait.jpg';
 ---
 
 <section id="about" class="about">
@@ -10,16 +12,13 @@
       <!-- Portrait -->
       <div class="about__portrait">
         <div class="about__portrait-inner">
-          <img
-            src="/images/portrait.jpg"
+          <Image
+            src={portrait}
             alt="Viju Sanjai"
             loading="lazy"
-            decoding="async"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+            width={600}
+            quality={80}
           />
-          <div class="about__portrait-fallback" style="display:none">
-            <span>VS</span>
-          </div>
         </div>
       </div>
 

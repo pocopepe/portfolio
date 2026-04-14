@@ -41,6 +41,12 @@ const {
     </script>
   </head>
   <body>
+    <!-- Scroll progress -->
+    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+
     <Nav />
     <main>
       <slot />
@@ -48,3 +54,86 @@ const {
     <Contact />
   </body>
 </html>
+
+<script>
+  // Scroll progress
+  const progressEl = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progressEl!.style.transform = `scaleX(${window.scrollY / max})`;
+  }, { passive: true });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  if (cursor && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let cx = 0, cy = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      cx = e.clientX;
+      cy = e.clientY;
+      cursor.style.transform = `translate(${cx}px, ${cy}px)`;
+    });
+
+    document.querySelectorAll('a, button, [role="button"]').forEach((el) => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
+    });
+
+    document.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
+    document.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
+  }
+</script>
+
+<style>
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .cursor {
+    position: fixed;
+    top: -5px;
+    left: -5px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transition:
+      width  0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      top    0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      left   0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.25s ease,
+      opacity 0.2s ease;
+    will-change: transform;
+    display: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cursor { display: block; }
+  }
+
+  .cursor.is-hovering {
+    width: 36px;
+    height: 36px;
+    top: -18px;
+    left: -18px;
+    background-color: transparent;
+    border: 1.5px solid var(--color-accent);
+    opacity: 0.7;
+  }
+
+  .cursor.is-hidden {
+    opacity: 0;
+  }
+</style>

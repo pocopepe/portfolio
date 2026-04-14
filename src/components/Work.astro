@@ -2,6 +2,22 @@
 import { projects } from '../data/projects';
 ---
 
+<!-- Floating hover card -->
+<div class="work__hover-card" id="work-hover-card" aria-hidden="true">
+  <div class="work__hover-accent" aria-hidden="true"></div>
+  <div class="work__hover-inner" id="work-hover-inner">
+    <div class="work__hover-header">
+      <span class="work__hover-category" id="work-hover-category"></span>
+      <span class="work__hover-year" id="work-hover-year"></span>
+    </div>
+    <p class="work__hover-desc" id="work-hover-desc"></p>
+    <div class="work__hover-footer">
+      <ul class="work__hover-tags" id="work-hover-tags"></ul>
+      <span class="work__hover-cta" id="work-hover-cta"></span>
+    </div>
+  </div>
+</div>
+
 <section id="work" class="work">
   <div class="container-portfolio">
     <span class="section-label">Selected Work</span>
@@ -15,6 +31,11 @@ import { projects } from '../data/projects';
             target={project.link ? '_blank' : undefined}
             rel={project.link ? 'noopener noreferrer' : undefined}
             data-has-link={project.link ? 'true' : 'false'}
+            data-description={project.description}
+            data-tags={project.tags.join(',')}
+            data-category={project.category}
+            data-year={project.year}
+            data-link={project.link ?? ''}
           >
             {/* Sliding background fill */}
             <span class="work__fill" aria-hidden="true"></span>
@@ -228,4 +249,222 @@ import { projects } from '../data/projects';
       display: none;
     }
   }
+
+  /* ── Hover card ── */
+  .work__hover-card {
+    position: fixed;
+    z-index: 200;
+    width: 300px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.94);
+    transition:
+      opacity 0.18s ease,
+      transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: left, top, opacity, transform;
+    display: none;
+    overflow: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .work__hover-card { display: block; }
+  }
+
+  .work__hover-card.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Accent gradient bar at top */
+  .work__hover-accent {
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--color-accent),
+      var(--color-highlight)
+    );
+  }
+
+  .work__hover-inner {
+    padding: 1.1rem 1.4rem 1.25rem;
+    opacity: 1;
+    transition: opacity 0.12s ease;
+  }
+
+  .work__hover-inner.is-switching {
+    opacity: 0;
+  }
+
+  .work__hover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .work__hover-category {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .work__hover-year {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .work__hover-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  .work__hover-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .work__hover-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    flex: 1;
+  }
+
+  .work__hover-tags li {
+    font-size: 0.58rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    border: 1px solid var(--color-border);
+    padding: 0.18rem 0.45rem;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .work__hover-cta {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .work__hover-cta.is-shown {
+    opacity: 1;
+  }
 </style>
+
+<script>
+  const card     = document.getElementById('work-hover-card')  as HTMLElement;
+  const inner    = document.getElementById('work-hover-inner') as HTMLElement;
+  const descEl   = document.getElementById('work-hover-desc')  as HTMLElement;
+  const tagsEl   = document.getElementById('work-hover-tags')  as HTMLElement;
+  const catEl    = document.getElementById('work-hover-category') as HTMLElement;
+  const yearEl   = document.getElementById('work-hover-year')  as HTMLElement;
+  const ctaEl    = document.getElementById('work-hover-cta')   as HTMLElement;
+  const rows     = document.querySelectorAll<HTMLElement>('.work__row');
+
+  if (card && inner && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+
+  const OFFSET = 28;
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+  let mouseEX = 0, mouseEY = 0;
+  let rafRunning = false;
+
+  function computeTarget(ex: number, ey: number) {
+    const w = card.offsetWidth;
+    const h = card.offsetHeight;
+    let x = ex + OFFSET;
+    let y = ey + OFFSET;
+    if (x + w > window.innerWidth  - 16) x = ex - w - OFFSET;
+    if (y + h > window.innerHeight - 16) y = ey - h - OFFSET;
+    return { x, y };
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    mouseEX = e.clientX;
+    mouseEY = e.clientY;
+    const t = computeTarget(mouseEX, mouseEY);
+    tx = t.x;
+    ty = t.y;
+  }, { passive: true });
+
+  function tick() {
+    cx = lerp(cx, tx, 0.14);
+    cy = lerp(cy, ty, 0.14);
+    card.style.left = `${cx}px`;
+    card.style.top  = `${cy}px`;
+    if (rafRunning) requestAnimationFrame(tick);
+  }
+
+  function populate(row: HTMLElement) {
+    catEl.textContent  = row.dataset.category ?? '';
+    yearEl.textContent = row.dataset.year     ?? '';
+    descEl.textContent = row.dataset.description ?? '';
+    const tags = (row.dataset.tags ?? '').split(',').filter(Boolean);
+    tagsEl.innerHTML   = tags.map(t => `<li>${t}</li>`).join('');
+    const hasLink = row.dataset.link;
+    ctaEl.textContent  = hasLink ? 'Open ↗' : '';
+    ctaEl.classList.toggle('is-shown', !!hasLink);
+  }
+
+  rows.forEach((row) => {
+    row.addEventListener('mouseenter', () => {
+      // Snap position on first appear so card doesn't slide from wrong spot
+      const t = computeTarget(mouseEX, mouseEY);
+      cx = t.x; cy = t.y;
+      tx = t.x; ty = t.y;
+      card.style.left = `${cx}px`;
+      card.style.top  = `${cy}px`;
+
+      populate(row);
+      card.classList.add('is-visible');
+
+      if (!rafRunning) {
+        rafRunning = true;
+        requestAnimationFrame(tick);
+      }
+    });
+
+    row.addEventListener('mouseleave', () => {
+      card.classList.remove('is-visible');
+      rafRunning = false;
+    });
+  });
+
+  // Cross-fade content when moving between rows
+  rows.forEach((row) => {
+    row.addEventListener('mouseenter', () => {
+      if (card.classList.contains('is-visible')) {
+        inner.classList.add('is-switching');
+        setTimeout(() => {
+          populate(row);
+          inner.classList.remove('is-switching');
+        }, 100);
+      }
+    });
+  });
+
+  } // end hover guard
+</script>

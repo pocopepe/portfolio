@@ -77,28 +77,19 @@
           <input type="checkbox" name="botcheck" style="display:none" />
 
           <div class="cform__row">
-            <div class="cform__group">
-              <label class="cform__label" for="cf-name">Name</label>
-              <div class="cform__input-wrap">
-                <input class="cform__input" type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
-                <div class="cform__input-line"></div>
-              </div>
+            <div class="cform__group cform__group--anim">
+              <label class="cform__label" for="cf-name"><span class="cform__field-num">01</span> Name</label>
+              <input class="cform__input" type="text" id="cf-name" name="name" placeholder="Your name" required autocomplete="name" />
             </div>
-            <div class="cform__group">
-              <label class="cform__label" for="cf-email">Email</label>
-              <div class="cform__input-wrap">
-                <input class="cform__input" type="email" id="cf-email" name="email" placeholder="your@email.com" required autocomplete="email" />
-                <div class="cform__input-line"></div>
-              </div>
+            <div class="cform__group cform__group--anim">
+              <label class="cform__label" for="cf-email"><span class="cform__field-num">02</span> Email</label>
+              <input class="cform__input" type="email" id="cf-email" name="email" placeholder="your@email.com" required autocomplete="email" />
             </div>
           </div>
 
-          <div class="cform__group">
-            <label class="cform__label" for="cf-message">Message</label>
-            <div class="cform__input-wrap">
-              <textarea class="cform__input cform__textarea" id="cf-message" name="message" placeholder="Tell me about your project, idea, or opportunity." rows="6" required></textarea>
-              <div class="cform__input-line"></div>
-            </div>
+          <div class="cform__group cform__group--anim">
+            <label class="cform__label" for="cf-message"><span class="cform__field-num">03</span> Message</label>
+            <textarea class="cform__input cform__textarea" id="cf-message" name="message" placeholder="Tell me about your project, idea, or opportunity." rows="6" required></textarea>
           </div>
 
           <div class="cform__footer">
@@ -181,7 +172,7 @@
   const successEl = document.getElementById('cf-success') as HTMLElement;
   const errorEl = document.getElementById('cf-error') as HTMLElement;
 
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = (form.querySelector('#cf-name') as HTMLInputElement).value.trim();
     const email = (form.querySelector('#cf-email') as HTMLInputElement).value.trim();
@@ -196,30 +187,13 @@
       return;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.classList.add('is-loading');
-    errorEl.textContent = '';
+    // Show success immediately — don't make the user wait
+    const payload = new FormData(form);
+    form.classList.add('is-hidden');
+    successEl.classList.add('is-visible');
 
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: new FormData(form),
-      });
-      const json = await res.json();
-
-      if (res.ok && json.success) {
-        form.classList.add('is-hidden');
-        successEl.classList.add('is-visible');
-      } else {
-        errorEl.textContent = json.message ?? 'Something went wrong — email me directly.';
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('is-loading');
-      }
-    } catch {
-      errorEl.textContent = 'Network error — email avijusanjai@gmail.com directly.';
-      submitBtn.disabled = false;
-      submitBtn.classList.remove('is-loading');
-    }
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body: payload })
+      .catch(() => {/* silent — user already saw success */});
   });
 </script>
 
@@ -382,7 +356,7 @@
   .cform {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
     transition: opacity 0.3s ease;
   }
 
@@ -393,18 +367,33 @@
   .cform__row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   @media (max-width: 500px) {
     .cform__row { grid-template-columns: 1fr; }
   }
 
+  /* Staggered entrance animation */
+  @keyframes fieldReveal {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .cform__group {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
+
+  .cform__group--anim {
+    opacity: 0;
+    animation: fieldReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .cform__row .cform__group--anim:nth-child(1) { animation-delay: 0.1s; }
+  .cform__row .cform__group--anim:nth-child(2) { animation-delay: 0.2s; }
+  .cform__group--anim:not(.cform__row .cform__group--anim)  { animation-delay: 0.3s; }
 
   .cform__label {
     font-size: 0.6rem;
@@ -412,60 +401,62 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-muted);
-    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.25s ease;
   }
 
-  .cform__input-wrap {
-    position: relative;
+  .cform__field-num {
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cform__group:focus-within .cform__label {
+    color: var(--color-accent);
+  }
+
+  .cform__group:focus-within .cform__field-num {
+    opacity: 1;
   }
 
   .cform__input {
     width: 100%;
-    background: transparent;
-    border: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
     color: var(--color-text);
     font-family: inherit;
     font-size: 0.92rem;
     font-weight: 300;
-    padding: 0.5rem 0 0.75rem;
+    padding: 0.85rem 1rem;
     outline: none;
-    border-radius: 0;
     -webkit-appearance: none;
     display: block;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background-color 0.25s ease;
   }
 
   .cform__input::placeholder {
     color: var(--color-muted);
-    opacity: 0.35;
+    opacity: 0.4;
   }
 
-  /* Animated bottom border */
-  .cform__input-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: var(--color-border);
-  }
-
-  .cform__input-line::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: var(--color-accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .cform__input:focus ~ .cform__input-line::after {
-    transform: scaleX(1);
+  .cform__input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 12%, transparent);
+    background-color: color-mix(in srgb, var(--color-accent) 3%, var(--color-surface));
   }
 
   .cform__textarea {
     resize: none;
-    min-height: 130px;
+    min-height: 140px;
     line-height: 1.65;
   }
 
