@@ -21,12 +21,12 @@ export const projects: Project[] = [
   },
   {
     id: 'ffmpeg-webgpu',
-    title: 'FFmpeg WebGPU Integration',
+    title: 'FFmpeg WebGPU Adapter',
     category: 'Systems / GPU',
     year: '2024',
     description:
-      'Custom WebGPU hwcontext for FFmpeg enabling zero-copy hardware-accelerated video pipelines. Ported Vulkan-based compute shaders to WGSL; Rust safely bridges FFmpeg\'s C architecture.',
-    tags: ['Rust', 'WebGPU', 'WGSL', 'Vulkan', 'FFmpeg', 'C'],
+      'Implemented a WebGPU hardware device context (hwcontext_webgpu) directly in FFmpeg\'s libavutil, enabling GPU-accelerated frame processing in the browser. WGSL compute shaders are authored inline in C and dispatched via the WebGPU API. Built a custom Emscripten/WASM compilation pipeline with CPU↔GPU memory transfer and a browser-based test harness.',
+    tags: ['C', 'WebGPU', 'WGSL', 'WebAssembly', 'Emscripten', 'FFmpeg'],
   },
   {
     id: 'firmware-signer',

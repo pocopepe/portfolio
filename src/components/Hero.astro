@@ -2,6 +2,7 @@
 ---
 
 <section class="hero">
+  <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
   <div class="container-portfolio hero__container">
 
     <!-- Top bar: label + availability -->
@@ -307,4 +308,99 @@
       gap: 1rem;
     }
   }
+
+  /* Canvas backdrop */
+  .hero__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero {
+    position: relative;
+  }
+
+  .hero__container {
+    position: relative;
+    z-index: 1;
+  }
 </style>
+
+<script>
+  const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
+  if (!canvas) throw new Error();
+  const ctx = canvas.getContext('2d')!;
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  // Read accent color from CSS variable
+  const style   = getComputedStyle(document.documentElement);
+  const isDark  = () => document.documentElement.dataset.theme === 'dark';
+
+  // Lines: { angle in radians, yFraction of canvas height, speed px/frame, opacity, width }
+  const LINES = [
+    { yFrac: 0.18, angle: -0.12, speed: 0.18, opacity: 0.07, phase: 0     },
+    { yFrac: 0.42, angle:  0.08, speed: 0.12, opacity: 0.05, phase: 200   },
+    { yFrac: 0.67, angle: -0.06, speed: 0.22, opacity: 0.06, phase: 400   },
+    { yFrac: 0.83, angle:  0.14, speed: 0.15, opacity: 0.04, phase: 100   },
+  ];
+
+  let frame = 0;
+  let rafId: number;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const accent = isDark() ? '#d3a666' : '#93471e';
+    const w = canvas.width;
+    const h = canvas.height;
+    const diag = Math.sqrt(w * w + h * h);
+
+    LINES.forEach((line) => {
+      const t      = frame + line.phase;
+      const travel = (t * line.speed) % (diag * 2) - diag;
+      const cy     = line.yFrac * h + Math.sin(t * 0.004) * h * 0.04;
+
+      ctx.save();
+      ctx.translate(w / 2 + travel - diag / 2, cy);
+      ctx.rotate(line.angle);
+
+      const grad = ctx.createLinearGradient(-diag / 2, 0, diag / 2, 0);
+      grad.addColorStop(0,    'transparent');
+      grad.addColorStop(0.15, accent);
+      grad.addColorStop(0.85, accent);
+      grad.addColorStop(1,    'transparent');
+
+      ctx.globalAlpha = line.opacity;
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = 0.75;
+      ctx.beginPath();
+      ctx.moveTo(-diag / 2, 0);
+      ctx.lineTo( diag / 2, 0);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    frame++;
+    rafId = requestAnimationFrame(draw);
+  }
+
+  // Pause when tab hidden
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(rafId);
+    else draw();
+  });
+
+  const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch  = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (!noMotion && !isTouch) draw();
+</script>

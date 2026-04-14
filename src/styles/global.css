@@ -55,6 +55,20 @@ html {
 body {
   overflow-x: hidden;
   line-height: 1.6;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-border) 90%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 36px 36px;
+  background-attachment: fixed; /* overridden on mobile below */
+}
+
+/* iOS Safari doesn't support background-attachment: fixed correctly */
+@media (max-width: 767px) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 img,
