@@ -76,8 +76,7 @@ const skillGroups = [
                 <div class="skills__bar-track">
                   <div
                     class="skills__bar-fill"
-                    style={`--fill: ${skill.level}%; --color: ${group.color}`}
-                    data-fill={skill.level}
+                    style={`--fill: ${skill.level / 100}; --color: ${group.color}`}
                   ></div>
                 </div>
               </li>
@@ -179,14 +178,16 @@ const skillGroups = [
 
   .skills__bar-fill {
     height: 100%;
-    width: 0%;
+    width: 100%;
     background-color: var(--color);
     border-radius: 999px;
-    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .skills__bar-fill.is-animated {
-    width: var(--fill);
+    transform: scaleX(var(--fill));
   }
 </style>
 
@@ -198,12 +199,9 @@ const skillGroups = [
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          // Slight stagger per bar using index
           const el = entry.target as HTMLElement;
           const index = [...fills].indexOf(el);
-          setTimeout(() => {
-            el.classList.add('is-animated');
-          }, index * 40);
+          setTimeout(() => el.classList.add('is-animated'), index * 40);
           observer.unobserve(el);
         }
       });

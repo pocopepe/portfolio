@@ -108,7 +108,7 @@ import { projects } from '../data/projects';
     background-color: var(--color-accent);
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 0;
   }
 
@@ -431,38 +431,28 @@ import { projects } from '../data/projects';
 
   rows.forEach((row) => {
     row.addEventListener('mouseenter', () => {
-      // Snap position on first appear so card doesn't slide from wrong spot
+      const alreadyVisible = card.classList.contains('is-visible');
+
+      // Snap position so card doesn't slide in from a stale spot
       const t = computeTarget(mouseEX, mouseEY);
-      cx = t.x; cy = t.y;
-      tx = t.x; ty = t.y;
+      cx = t.x; cy = t.y; tx = t.x; ty = t.y;
       card.style.left = `${cx}px`;
       card.style.top  = `${cy}px`;
 
-      populate(row);
-      card.classList.add('is-visible');
-
-      if (!rafRunning) {
-        rafRunning = true;
-        requestAnimationFrame(tick);
+      if (alreadyVisible) {
+        inner.classList.add('is-switching');
+        setTimeout(() => { populate(row); inner.classList.remove('is-switching'); }, 100);
+      } else {
+        populate(row);
       }
+
+      card.classList.add('is-visible');
+      if (!rafRunning) { rafRunning = true; requestAnimationFrame(tick); }
     });
 
     row.addEventListener('mouseleave', () => {
       card.classList.remove('is-visible');
       rafRunning = false;
-    });
-  });
-
-  // Cross-fade content when moving between rows
-  rows.forEach((row) => {
-    row.addEventListener('mouseenter', () => {
-      if (card.classList.contains('is-visible')) {
-        inner.classList.add('is-switching');
-        setTimeout(() => {
-          populate(row);
-          inner.classList.remove('is-switching');
-        }, 100);
-      }
     });
   });
 

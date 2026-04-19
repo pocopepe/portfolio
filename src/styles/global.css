@@ -90,15 +90,10 @@ a {
   padding-inline: clamp(1.25rem, 4vw, 3rem);
 }
 
-/* ── Typography utilities ── */
-.section-label {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: 2.5rem;
+/* ── Shared animations ── */
+@keyframes ping {
+  0%        { transform: scale(1); opacity: 0.35; }
+  75%, 100% { transform: scale(2.2); opacity: 0; }
 }
 
 /* ── Word-split animation wrapper ── */
@@ -132,6 +127,12 @@ body::after {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 2.5rem;
 }
 
 .section-label::before {
@@ -142,6 +143,11 @@ body::after {
   background-color: var(--color-accent);
   flex-shrink: 0;
   opacity: 0.8;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-label:hover::before {
+  width: 52px;
 }
 
 /* ── Custom cursor (desktop only) ── */

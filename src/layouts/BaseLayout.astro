@@ -25,6 +25,9 @@ const {
     <meta property="og:type" content="website" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/favicon-32x32.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
@@ -66,21 +69,18 @@ const {
   // Custom cursor
   const cursor = document.getElementById('cursor');
   if (cursor && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let cx = 0, cy = 0;
-
     document.addEventListener('mousemove', (e) => {
-      cx = e.clientX;
-      cy = e.clientY;
-      cursor.style.transform = `translate(${cx}px, ${cy}px)`;
-    });
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    }, { passive: true });
 
-    document.querySelectorAll('a, button, [role="button"]').forEach((el) => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
-    });
+    // Event delegation — one listener instead of N
+    document.addEventListener('mouseover', (e) => {
+      const over = (e.target as Element).closest('a, button, [role="button"]');
+      cursor.classList.toggle('is-hovering', !!over);
+    }, { passive: true });
 
-    document.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
-    document.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
+    document.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'), { passive: true });
+    document.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'), { passive: true });
   }
 </script>
 
@@ -108,15 +108,11 @@ const {
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    transition:
-      width  0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      height 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      top    0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      left   0.25s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.25s ease,
-      opacity 0.2s ease;
+    scale: 1;
+    transition: scale 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.15s ease, outline-color 0.2s ease;
     will-change: transform;
     display: none;
+    outline: 0px solid transparent;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -124,13 +120,10 @@ const {
   }
 
   .cursor.is-hovering {
-    width: 36px;
-    height: 36px;
-    top: -18px;
-    left: -18px;
+    scale: 4;
     background-color: transparent;
-    border: 1.5px solid var(--color-accent);
-    opacity: 0.7;
+    outline: 0.4px solid var(--color-accent);
+    opacity: 0.6;
   }
 
   .cursor.is-hidden {

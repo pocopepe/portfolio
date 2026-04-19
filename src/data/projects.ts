@@ -22,11 +22,12 @@ export const projects: Project[] = [
   {
     id: 'ffmpeg-webgpu',
     title: 'FFmpeg WebGPU Adapter',
-    category: 'Systems / GPU',
-    year: '2024',
+    category: 'Systems / GPU · RFC upstream',
+    year: '2026',
     description:
-      'Implemented a WebGPU hardware device context (hwcontext_webgpu) directly in FFmpeg\'s libavutil, enabling GPU-accelerated frame processing in the browser. WGSL compute shaders are authored inline in C and dispatched via the WebGPU API. Built a custom Emscripten/WASM compilation pipeline with CPU↔GPU memory transfer and a browser-based test harness.',
-    tags: ['C', 'WebGPU', 'WGSL', 'WebAssembly', 'Emscripten', 'FFmpeg'],
+      'Authored [RFC PATCH v2 0/2] upstreaming a complete WebGPU hardware context (AV_HWDEVICE_TYPE_WEBGPU, AV_PIX_FMT_WEBGPU) and vf_scale_webgpu filter to ffmpeg-devel — implementing the hwcontext API from scratch in C for zero-copy GPU buffer management, with WGSL compute shaders authored inline. Tested across three backends: wgpu-native (macOS arm64, Linux x86_64), Dawn (Linux x86_64), and Emscripten (browser target).',
+    tags: ['C', 'WebGPU', 'WGSL', 'wgpu-native', 'Dawn', 'Emscripten', 'FFmpeg'],
+    link: 'https://github.com/pocopepe/FFmpeg',
   },
   {
     id: 'firmware-signer',
@@ -47,6 +48,16 @@ export const projects: Project[] = [
       'Zero-backend local-first PDF editor using the File System Access API. Non-destructive highlights serialised to WebStorage — no server, no upload, complete file integrity.',
     tags: ['JavaScript', 'Web APIs', 'File System Access API', 'WebStorage'],
     link: 'https://github.com/pocopepe/PDF-editor',
+  },
+  {
+    id: 'open-source',
+    title: 'Open Source Contributions',
+    category: 'Rust Ecosystem',
+    year: '2025–26',
+    description:
+      'Merged patches across the Rust ecosystem: uutils/diffutils (WASM32 build compatibility, GNU testsuite tracking workflows), uutils/sed (--version flag, newline behavior fix in the p command), and rust-lang/rust-clippy (false-positive fix in the from_over_into linter).',
+    tags: ['Rust', 'uutils', 'rust-clippy', 'GNU', 'Open Source'],
+    link: 'https://github.com/pocopepe',
   },
   {
     id: 'opencore-efi',
