@@ -48,7 +48,9 @@ const {
     <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
     <!-- Custom cursor -->
-    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="cursor" id="cursor" aria-hidden="true">
+      <div class="cursor__dot"></div>
+    </div>
 
     <Nav />
     <main>
@@ -69,12 +71,11 @@ const {
   // Custom cursor
   const cursor = document.getElementById('cursor');
   if (cursor && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    }, { passive: true });
+    cursor.classList.add('is-hidden');
 
-    // Event delegation — one listener instead of N
-    document.addEventListener('mouseover', (e) => {
+    document.addEventListener('mousemove', (e) => {
+      cursor.classList.remove('is-hidden');
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
       const over = (e.target as Element).closest('a, button, [role="button"]');
       cursor.classList.toggle('is-hovering', !!over);
     }, { passive: true });
@@ -100,33 +101,41 @@ const {
 
   .cursor {
     position: fixed;
-    top: -5px;
-    left: -5px;
-    width: 10px;
-    height: 10px;
-    background-color: var(--color-accent);
-    border-radius: 50%;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
     pointer-events: none;
     z-index: 10000;
-    scale: 1;
-    transition: scale 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, opacity 0.15s ease, outline-color 0.2s ease;
     will-change: transform;
     display: none;
-    outline: 0px solid transparent;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .cursor { display: block; }
   }
 
-  .cursor.is-hovering {
+  .cursor__dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: -5px;
+    left: -5px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    scale: 1;
+    outline: 0px solid transparent;
+    transition: scale 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease, opacity 0.15s ease, outline-color 0.35s ease;
+  }
+
+  .cursor.is-hovering .cursor__dot {
     scale: 4;
     background-color: transparent;
     outline: 0.4px solid var(--color-accent);
     opacity: 0.6;
   }
 
-  .cursor.is-hidden {
+  .cursor.is-hidden .cursor__dot {
     opacity: 0;
   }
 </style>
