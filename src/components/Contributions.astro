@@ -1,0 +1,373 @@
+---
+interface Contribution {
+  repo: string;
+  number: number;
+  title: string;
+  state: 'merged' | 'open' | 'closed';
+  date: string;
+  url: string;
+}
+
+const contributions: Contribution[] = [
+  {
+    repo: 'rust-lang/rust-clippy',
+    number: 16881,
+    title: 'fix `from_over_into` false positive with conflicting blanket From impl',
+    state: 'open',
+    date: 'Apr 2026',
+    url: 'https://github.com/rust-lang/rust-clippy/pull/16881',
+  },
+  {
+    repo: 'uutils/diffutils',
+    number: 217,
+    title: 'add GNU testsuite tracking workflows',
+    state: 'open',
+    date: 'Apr 2026',
+    url: 'https://github.com/uutils/diffutils/pull/217',
+  },
+  {
+    repo: 'uutils/diffutils',
+    number: 215,
+    title: 'fix build failure on wasm32-wasip1 target',
+    state: 'merged',
+    date: 'Apr 2026',
+    url: 'https://github.com/uutils/diffutils/pull/215',
+  },
+  {
+    repo: 'uutils/sed',
+    number: 206,
+    title: 'add --version support',
+    state: 'merged',
+    date: 'Dec 2025',
+    url: 'https://github.com/uutils/sed/pull/206',
+  },
+  {
+    repo: 'AxolotlHere/chip-8',
+    number: 54,
+    title: 'implement opcodes Fx33, Fx29, Fx1E, Fx18, Fx15, Fx07, Ex9E, ExA1, Bnnn',
+    state: 'merged',
+    date: 'Jun 2025',
+    url: 'https://github.com/AxolotlHere/chip-8/pull/54',
+  },
+  {
+    repo: 'AxolotlHere/chip-8',
+    number: 38,
+    title: 'implement opcode Fx0A (wait for key press)',
+    state: 'merged',
+    date: 'Jun 2025',
+    url: 'https://github.com/AxolotlHere/chip-8/pull/38',
+  },
+  {
+    repo: 'AxolotlHere/chip-8',
+    number: 36,
+    title: 'implement CLS opcode',
+    state: 'merged',
+    date: 'Jun 2025',
+    url: 'https://github.com/AxolotlHere/chip-8/pull/36',
+  },
+  {
+    repo: 'phaserjs/template-bun',
+    number: 2,
+    title: 'address Bun template errors',
+    state: 'merged',
+    date: 'Oct 2024',
+    url: 'https://github.com/phaserjs/template-bun/pull/2',
+  },
+];
+
+const mergedCount = contributions.filter((c) => c.state === 'merged').length;
+const openCount = contributions.filter((c) => c.state === 'open').length;
+---
+
+<section id="contributions" class="contrib">
+  <div class="container-portfolio">
+    <div class="contrib__header">
+      <span class="section-label">Open Source</span>
+      <div class="contrib__counts" aria-label="Contribution counts">
+        <span class="contrib__count">
+          <span class="contrib__count-num">{mergedCount}</span>
+          <span class="contrib__count-label">Merged</span>
+        </span>
+        <span class="contrib__count-sep" aria-hidden="true">/</span>
+        <span class="contrib__count">
+          <span class="contrib__count-num">{openCount}</span>
+          <span class="contrib__count-label">Open</span>
+        </span>
+      </div>
+    </div>
+
+    <ul class="contrib__list" role="list">
+      {contributions.map((c) => (
+        <li class="contrib__row">
+          <a
+            class="contrib__link"
+            href={c.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${c.repo} pull request ${c.number}: ${c.title}`}
+          >
+            <span class="contrib__num">#{c.number}</span>
+            <span class="contrib__repo">{c.repo}</span>
+            <span class="contrib__title">{c.title}</span>
+            <span class={`contrib__state contrib__state--${c.state}`}>{c.state}</span>
+            <span class="contrib__date">{c.date}</span>
+            <span class="contrib__arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contrib {
+    padding-block: clamp(5rem, 10vw, 9rem);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contrib__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .contrib__counts {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .contrib__count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .contrib__count-num {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  .contrib__count-label {
+    font-size: 0.6rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    opacity: 0.7;
+  }
+
+  .contrib__count-sep {
+    color: var(--color-border);
+    font-weight: 200;
+  }
+
+  .contrib__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contrib__row {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contrib__link {
+    display: grid;
+    grid-template-columns: 72px 180px 1fr auto auto 20px;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 1.25rem;
+    color: var(--color-text);
+    text-decoration: none;
+    position: relative;
+    transition: padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contrib__link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, var(--color-accent) 4%, transparent);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    z-index: -1;
+  }
+
+  .contrib__link:hover::before,
+  .contrib__link:focus-visible::before {
+    opacity: 1;
+  }
+
+  .contrib__link:hover,
+  .contrib__link:focus-visible {
+    padding-left: 0.75rem;
+  }
+
+  .contrib__link:focus-visible {
+    outline: none;
+  }
+
+  .contrib__num {
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .contrib__repo {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.25s ease;
+  }
+
+  .contrib__link:hover .contrib__repo {
+    color: var(--color-text);
+  }
+
+  .contrib__title {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--color-text);
+    opacity: 0.85;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contrib__state {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+  }
+
+  .contrib__state--merged {
+    color: #a855f7;
+    border-color: color-mix(in srgb, #a855f7 40%, var(--color-border));
+    background-color: color-mix(in srgb, #a855f7 6%, transparent);
+  }
+
+  .contrib__state--open {
+    color: #22c55e;
+    border-color: color-mix(in srgb, #22c55e 40%, var(--color-border));
+    background-color: color-mix(in srgb, #22c55e 6%, transparent);
+  }
+
+  .contrib__state--closed {
+    color: var(--color-muted);
+  }
+
+  .contrib__date {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .contrib__arrow {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    opacity: 0;
+    transform: translate(-4px, 4px);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .contrib__link:hover .contrib__arrow,
+  .contrib__link:focus-visible .contrib__arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    color: var(--color-accent);
+  }
+
+  /* Tablet: collapse columns */
+  @media (max-width: 900px) {
+    .contrib__link {
+      grid-template-columns: 56px 1fr auto;
+      grid-template-rows: auto auto;
+      gap: 0.35rem 1rem;
+      padding-block: 1.1rem;
+    }
+
+    .contrib__num {
+      grid-row: 1 / 3;
+      align-self: start;
+      padding-top: 0.15rem;
+    }
+
+    .contrib__repo {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .contrib__title {
+      grid-column: 2 / 4;
+      grid-row: 2;
+      white-space: normal;
+      line-height: 1.45;
+    }
+
+    .contrib__state {
+      grid-column: 3;
+      grid-row: 1;
+      justify-self: end;
+    }
+
+    .contrib__date,
+    .contrib__arrow {
+      display: none;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 500px) {
+    .contrib__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .contrib__link {
+      grid-template-columns: 1fr auto;
+      gap: 0.3rem 0.75rem;
+    }
+
+    .contrib__num {
+      grid-row: 1;
+      grid-column: 1;
+      padding-top: 0;
+    }
+
+    .contrib__repo {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .contrib__title {
+      grid-column: 1 / 3;
+      grid-row: 3;
+    }
+
+    .contrib__state {
+      grid-column: 2;
+      grid-row: 1 / 3;
+      align-self: center;
+    }
+  }
+</style>

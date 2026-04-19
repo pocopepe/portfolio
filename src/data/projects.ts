@@ -50,16 +50,6 @@ export const projects: Project[] = [
     link: 'https://github.com/pocopepe/PDF-editor',
   },
   {
-    id: 'open-source',
-    title: 'Open Source Contributions',
-    category: 'Rust Ecosystem',
-    year: '2025–26',
-    description:
-      'Merged patches across the Rust ecosystem: uutils/diffutils (WASM32 build compatibility, GNU testsuite tracking workflows), uutils/sed (--version flag, newline behavior fix in the p command), and rust-lang/rust-clippy (false-positive fix in the from_over_into linter).',
-    tags: ['Rust', 'uutils', 'rust-clippy', 'GNU', 'Open Source'],
-    link: 'https://github.com/pocopepe',
-  },
-  {
     id: 'opencore-efi',
     title: 'OpenCore EFI',
     category: 'Firmware / Hackintosh',
