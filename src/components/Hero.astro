@@ -69,6 +69,11 @@
         </li>
         <li class="hero__stat-sep" aria-hidden="true">/</li>
         <li class="hero__stat">
+          <span class="hero__stat-num" id="hero-pr-count">—</span>
+          <span class="hero__stat-label">PRs</span>
+        </li>
+        <li class="hero__stat-sep" aria-hidden="true">/</li>
+        <li class="hero__stat">
           <span class="hero__stat-num">8.16</span>
           <span class="hero__stat-label">GPA</span>
         </li>
@@ -399,4 +404,13 @@
   const isTouch  = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   if (!noMotion && !isTouch) draw();
+
+  // Live PR count
+  fetch('https://portfolio-api.avijusanjai.workers.dev/contributions')
+    .then((r) => r.json())
+    .then((data: unknown[]) => {
+      const el = document.getElementById('hero-pr-count');
+      if (el) el.textContent = String(data.length);
+    })
+    .catch(() => {});
 </script>

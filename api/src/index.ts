@@ -22,6 +22,7 @@ type GitHubPR = {
   number: number
   title: string
   state: string
+  body: string | null
   created_at: string
   repository_url: string
   pull_request?: { merged_at: string | null }
@@ -54,6 +55,7 @@ app.get(
         repo: pr.repository_url.replace('https://api.github.com/repos/', ''),
         number: pr.number,
         title: pr.title,
+        description: pr.body ? pr.body.replace(/<!--[\s\S]*?-->/g, '').trim().slice(0, 220) + (pr.body.length > 220 ? '…' : '') : '',
         state: pr.pull_request?.merged_at ? 'merged' : pr.state,
         date: new Date(pr.created_at).toLocaleDateString('en-US', {
           month: 'short',

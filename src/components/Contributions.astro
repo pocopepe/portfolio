@@ -1,6 +1,21 @@
 ---
-const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
 ---
+
+<!-- Floating hover card -->
+<div class="contrib__hover-card" id="contrib-hover-card" aria-hidden="true">
+  <div class="contrib__hover-accent"></div>
+  <div class="contrib__hover-inner" id="contrib-hover-inner">
+    <div class="contrib__hover-header">
+      <span class="contrib__hover-repo" id="contrib-hover-repo"></span>
+      <span class="contrib__hover-state" id="contrib-hover-state"></span>
+    </div>
+    <p class="contrib__hover-desc" id="contrib-hover-desc"></p>
+    <div class="contrib__hover-footer">
+      <span class="contrib__hover-date" id="contrib-hover-date"></span>
+      <span class="contrib__hover-cta">View PR ↗</span>
+    </div>
+  </div>
+</div>
 
 <section id="contributions" class="contrib">
   <div class="container-portfolio">
@@ -21,49 +36,54 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
 
     <div class="contrib__scroll-wrap">
       <ul class="contrib__list" id="contrib-list" role="list" aria-live="polite">
-      <!-- Skeleton rows -->
-      {Array.from({ length: 6 }).map(() => (
-        <li class="contrib__row contrib__row--skeleton">
-          <div class="contrib__link contrib__link--skeleton">
-            <span class="skel skel--num"></span>
-            <span class="skel skel--repo"></span>
-            <span class="skel skel--title"></span>
-            <span class="skel skel--badge"></span>
-            <span class="skel skel--date"></span>
-          </div>
-        </li>
-      ))}
+        {Array.from({ length: 6 }).map(() => (
+          <li class="contrib__row--skeleton">
+            <div class="contrib__link--skeleton">
+              <span class="skel skel--num"></span>
+              <span class="skel skel--repo"></span>
+              <span class="skel skel--badge"></span>
+              <span class="skel skel--date"></span>
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   </div>
 </section>
 
-<script define:vars={{ API_URL }}>
-  interface Contribution {
-    repo: string;
-    number: number;
-    title: string;
-    state: 'merged' | 'open' | 'closed';
-    date: string;
-    url: string;
+<script>
+  const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
+
+  function esc(s: string) {
+    return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  function renderRow(c: Contribution): string {
+  function renderRow(c: { repo: string; number: number; title: string; description: string; state: string; date: string; url: string }, i: number): string {
     return `
-      <li class="contrib__row">
+      <li class="contrib__item">
         <a
-          class="contrib__link"
-          href="${c.url}"
+          class="contrib__row"
+          href="${esc(c.url)}"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="${c.repo} pull request ${c.number}: ${c.title}"
+          data-repo="${esc(c.repo)}"
+          data-description="${esc(c.description)}"
+          data-state="${esc(c.state)}"
+          data-date="${esc(c.date)}"
         >
-          <span class="contrib__num">#${c.number}</span>
-          <span class="contrib__repo">${c.repo}</span>
-          <span class="contrib__title">${c.title}</span>
-          <span class="contrib__state contrib__state--${c.state}">${c.state}</span>
-          <span class="contrib__date">${c.date}</span>
-          <span class="contrib__arrow" aria-hidden="true">↗</span>
+          <span class="contrib__fill" aria-hidden="true"></span>
+          <span class="contrib__index">${String(i + 1).padStart(2, '0')}</span>
+          <div class="contrib__center">
+            <span class="contrib__title">${esc(c.title)}</span>
+            <span class="contrib__sub">${esc(c.repo)}</span>
+          </div>
+          <div class="contrib__right">
+            <span class="contrib__state contrib__state--${esc(c.state)}">${esc(c.state)}</span>
+            <span class="contrib__date">${esc(c.date)}</span>
+            <svg class="contrib__arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+            </svg>
+          </div>
         </a>
       </li>
     `;
@@ -72,17 +92,18 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
   async function load() {
     const list = document.getElementById('contrib-list');
     const mergedEl = document.getElementById('merged-count');
-    const openEl = document.getElementById('open-count');
+    const openEl   = document.getElementById('open-count');
     if (!list || !mergedEl || !openEl) return;
 
     try {
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error(`${res.status}`);
-      const contributions: Contribution[] = await res.json();
+      const contributions = await res.json() as { repo: string; number: number; title: string; description: string; state: string; date: string; url: string }[];
 
       mergedEl.textContent = String(contributions.filter((c) => c.state === 'merged').length);
-      openEl.textContent = String(contributions.filter((c) => c.state === 'open').length);
-      list.innerHTML = contributions.map(renderRow).join('');
+      openEl.textContent   = String(contributions.filter((c) => c.state === 'open').length);
+      list.innerHTML = contributions.map((c, i) => renderRow(c, i)).join('');
+      initHoverCard();
     } catch {
       list.innerHTML = `
         <li class="contrib__error">
@@ -92,8 +113,7 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     }
   }
 
-  load();
-
+  // ── Scroll fade ──
   const list = document.getElementById('contrib-list');
   const wrap = list?.parentElement;
   list?.addEventListener('scroll', () => {
@@ -101,6 +121,89 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     const atEnd = list.scrollHeight - list.scrollTop <= list.clientHeight + 4;
     wrap.classList.toggle('is-scrolled-to-end', atEnd);
   }, { passive: true });
+
+  // ── Hover card (same lerp pattern as Work section) ──
+  function initHoverCard() {
+    const card    = document.getElementById('contrib-hover-card')  as HTMLElement | null;
+    const inner   = document.getElementById('contrib-hover-inner') as HTMLElement | null;
+    const repoEl  = document.getElementById('contrib-hover-repo')  as HTMLElement | null;
+    const stateEl = document.getElementById('contrib-hover-state') as HTMLElement | null;
+    const descEl  = document.getElementById('contrib-hover-desc')  as HTMLElement | null;
+    const dateEl  = document.getElementById('contrib-hover-date')  as HTMLElement | null;
+
+    if (!card || !inner || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    const OFFSET = 28;
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    let mouseX = 0, mouseY = 0;
+    let rafRunning = false;
+
+    function computeTarget(ex: number, ey: number) {
+      const w = card.offsetWidth;
+      const h = card.offsetHeight;
+      let x = ex + OFFSET;
+      let y = ey + OFFSET;
+      if (x + w > window.innerWidth  - 16) x = ex - w - OFFSET;
+      if (y + h > window.innerHeight - 16) y = ey - h - OFFSET;
+      return { x, y };
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      const t = computeTarget(mouseX, mouseY);
+      tx = t.x; ty = t.y;
+    }, { passive: true });
+
+    function tick() {
+      cx = lerp(cx, tx, 0.14);
+      cy = lerp(cy, ty, 0.14);
+      card.style.left = `${cx}px`;
+      card.style.top  = `${cy}px`;
+      if (rafRunning) requestAnimationFrame(tick);
+    }
+
+    function populate(link: HTMLElement) {
+      const state = link.dataset.state ?? '';
+      if (repoEl)  repoEl.textContent  = link.dataset.repo ?? '';
+      if (descEl)  descEl.textContent  = link.dataset.description || 'No description provided.';
+      if (dateEl)  dateEl.textContent  = link.dataset.date ?? '';
+      if (stateEl) {
+        stateEl.textContent = state;
+        stateEl.className = `contrib__hover-state contrib__hover-state--${state}`;
+      }
+    }
+
+    // Use event delegation on the list so it works after innerHTML replace
+    const listEl = document.getElementById('contrib-list');
+    listEl?.addEventListener('mouseover', (e) => {
+      const row = (e.target as Element).closest<HTMLElement>('.contrib__row[data-repo]');
+      if (!row) return;
+
+      const alreadyVisible = card.classList.contains('is-visible');
+      const t = computeTarget(mouseX, mouseY);
+      cx = t.x; cy = t.y; tx = t.x; ty = t.y;
+      card.style.left = `${cx}px`;
+      card.style.top  = `${cy}px`;
+
+      if (alreadyVisible && repoEl?.textContent !== row.dataset.repo) {
+        inner.classList.add('is-switching');
+        setTimeout(() => { populate(row); inner.classList.remove('is-switching'); }, 100);
+      } else {
+        populate(row);
+      }
+
+      card.classList.add('is-visible');
+      if (!rafRunning) { rafRunning = true; requestAnimationFrame(tick); }
+    }, { passive: true });
+
+    listEl?.addEventListener('mouseleave', () => {
+      card.classList.remove('is-visible');
+      rafRunning = false;
+    }, { passive: true });
+  }
+
+  load();
 </script>
 
 <style>
@@ -150,6 +253,7 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     font-weight: 200;
   }
 
+  /* Scroll wrap */
   .contrib__scroll-wrap {
     position: relative;
   }
@@ -182,90 +286,102 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     scrollbar-color: var(--color-border) transparent;
   }
 
-  .contrib__list::-webkit-scrollbar {
-    width: 3px;
-  }
+  .contrib__list::-webkit-scrollbar { width: 3px; }
+  .contrib__list::-webkit-scrollbar-track { background: transparent; }
+  .contrib__list::-webkit-scrollbar-thumb { background-color: var(--color-border); border-radius: 999px; }
 
-  .contrib__list::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .contrib__list::-webkit-scrollbar-thumb {
-    background-color: var(--color-border);
-    border-radius: 999px;
-  }
-
-  .contrib__row {
+  /* ── Rows (mirrors Work section) ── */
+  .contrib__item {
     border-bottom: 1px solid var(--color-border);
   }
 
-  .contrib__link {
-    display: grid;
-    grid-template-columns: 72px 180px 1fr auto auto 20px;
-    align-items: center;
-    gap: 1.5rem;
-    padding-block: 1.25rem;
-    color: var(--color-text);
-    text-decoration: none;
+  .contrib__row {
     position: relative;
-    transition: padding-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 2rem;
+    padding-inline: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text);
+    overflow: hidden;
+    cursor: pointer;
+    transition: color 0.4s ease;
   }
 
-  .contrib__link::before {
-    content: '';
+  .contrib__fill {
     position: absolute;
     inset: 0;
-    background-color: color-mix(in srgb, var(--color-accent) 4%, transparent);
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    z-index: -1;
+    background-color: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
   }
 
-  .contrib__link:hover::before,
-  .contrib__link:focus-visible::before {
-    opacity: 1;
-  }
+  .contrib__row:hover .contrib__fill { transform: scaleX(1); }
+  .contrib__row:hover { color: var(--color-bg); }
 
-  .contrib__link:hover,
-  .contrib__link:focus-visible {
-    padding-left: 0.75rem;
-  }
+  .contrib__index,
+  .contrib__center,
+  .contrib__right { position: relative; z-index: 1; }
 
-  .contrib__link:focus-visible {
-    outline: none;
-  }
-
-  .contrib__num {
-    font-size: 0.75rem;
-    font-weight: 300;
+  .contrib__index {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
     color: var(--color-muted);
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0.02em;
+    transition: color 0.3s ease;
+    align-self: start;
+    padding-top: 0.35rem;
   }
 
-  .contrib__repo {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--color-accent);
-    letter-spacing: -0.005em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.25s ease;
+  .contrib__row:hover .contrib__index {
+    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
   }
 
-  .contrib__link:hover .contrib__repo {
-    color: var(--color-text);
+  .contrib__center {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
   }
 
   .contrib__title {
-    font-size: 0.88rem;
+    font-size: clamp(1.2rem, 2.8vw, 2.4rem);
     font-weight: 300;
-    color: var(--color-text);
-    opacity: 0.85;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: letter-spacing 0.4s ease;
+  }
+
+  .contrib__row:hover .contrib__title { letter-spacing: -0.01em; }
+
+  .contrib__sub {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--color-muted);
+    transition: color 0.3s ease;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .contrib__row:hover .contrib__sub {
+    color: color-mix(in srgb, var(--color-bg) 75%, transparent);
+  }
+
+  .contrib__right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
   }
 
   .contrib__state {
@@ -276,7 +392,10 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     padding: 0.2rem 0.55rem;
     border-radius: 999px;
     border: 1px solid var(--color-border);
+    transition: opacity 0.3s ease;
   }
+
+  .contrib__row:hover .contrib__state { opacity: 0.5; }
 
   .contrib__state--merged {
     color: #a855f7;
@@ -291,30 +410,25 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
   }
 
   .contrib__date {
-    font-size: 0.7rem;
-    font-weight: 400;
+    font-size: 0.75rem;
+    font-weight: 300;
     color: var(--color-muted);
-    letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+
+  .contrib__row:hover .contrib__date {
+    color: color-mix(in srgb, var(--color-bg) 70%, transparent);
   }
 
   .contrib__arrow {
-    font-size: 0.9rem;
-    color: var(--color-muted);
-    opacity: 0;
-    transform: translate(-4px, 4px);
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
   }
 
-  .contrib__link:hover .contrib__arrow,
-  .contrib__link:focus-visible .contrib__arrow {
-    opacity: 1;
-    transform: translate(0, 0);
-    color: var(--color-accent);
-  }
+  .contrib__row:hover .contrib__arrow { transform: translate(4px, -4px); }
 
-  /* Error state */
+  /* Error */
   .contrib__error {
     padding-block: 1.5rem;
     font-size: 0.85rem;
@@ -322,12 +436,23 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     color: var(--color-muted);
     border-bottom: 1px solid var(--color-border);
   }
-
-  .contrib__error a {
-    color: var(--color-accent);
-  }
+  .contrib__error a { color: var(--color-accent); }
 
   /* Skeleton */
+  .contrib__row--skeleton {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contrib__link--skeleton {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto auto auto;
+    align-items: center;
+    gap: 2rem;
+    padding-block: 2rem;
+    padding-inline: 0.5rem;
+    pointer-events: none;
+  }
+
   .skel {
     display: block;
     background: linear-gradient(
@@ -341,99 +466,145 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     border-radius: 3px;
     height: 10px;
   }
-
-  .skel--num  { width: 40px; }
-  .skel--repo { width: 120px; }
-  .skel--title { width: 60%; }
+  .skel--num   { width: 28px; }
+  .skel--repo  { width: 55%; height: 24px; border-radius: 3px; }
+  .skel--title { width: 80px; }
   .skel--badge { width: 52px; height: 20px; border-radius: 999px; }
-  .skel--date { width: 52px; }
-
-  .contrib__link--skeleton {
-    pointer-events: none;
-  }
+  .skel--date  { width: 52px; }
 
   @keyframes shimmer {
     0%   { background-position: 200% 0; }
     100% { background-position: -200% 0; }
   }
 
-  /* Tablet */
-  @media (max-width: 900px) {
-    .contrib__link {
-      grid-template-columns: 56px 1fr auto;
-      grid-template-rows: auto auto;
-      gap: 0.35rem 1rem;
-      padding-block: 1.1rem;
+  /* Mobile */
+  @media (max-width: 640px) {
+    .contrib__row {
+      grid-template-columns: 2rem 1fr;
+      gap: 1rem;
+      padding-block: 1.5rem;
     }
-
-    .contrib__num {
-      grid-row: 1 / 3;
-      align-self: start;
-      padding-top: 0.15rem;
-    }
-
-    .contrib__repo {
-      grid-column: 2;
-      grid-row: 1;
-    }
-
-    .contrib__title {
-      grid-column: 2 / 4;
-      grid-row: 2;
-      white-space: normal;
-      line-height: 1.45;
-    }
-
-    .contrib__state {
-      grid-column: 3;
-      grid-row: 1;
-      justify-self: end;
-    }
-
-    .contrib__date,
-    .contrib__arrow {
-      display: none;
-    }
-
-    .skel--date,
-    .skel--num ~ .skel--num {
-      display: none;
-    }
+    .contrib__right { display: none; }
+    .contrib__title { white-space: normal; }
   }
 
-  /* Mobile */
+  @media (min-width: 641px) and (max-width: 900px) {
+    .contrib__state { display: none; }
+  }
+
+  /* ── Hover card ── */
+  .contrib__hover-card {
+    position: fixed;
+    z-index: 200;
+    width: 300px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.94);
+    transition: opacity 0.18s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: left, top, opacity, transform;
+    display: none;
+    overflow: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .contrib__hover-card { display: block; }
+  }
+
+  .contrib__hover-card.is-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .contrib__hover-accent {
+    height: 3px;
+    background: linear-gradient(90deg, #a855f7, #22c55e);
+  }
+
+  .contrib__hover-inner {
+    padding: 1.1rem 1.4rem 1.25rem;
+    transition: opacity 0.12s ease;
+  }
+
+  .contrib__hover-inner.is-switching { opacity: 0; }
+
+  .contrib__hover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .contrib__hover-repo {
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contrib__hover-state {
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .contrib__hover-state--merged {
+    color: #a855f7;
+    border-color: color-mix(in srgb, #a855f7 40%, var(--color-border));
+    background-color: color-mix(in srgb, #a855f7 8%, transparent);
+  }
+
+  .contrib__hover-state--open {
+    color: #22c55e;
+    border-color: color-mix(in srgb, #22c55e 40%, var(--color-border));
+    background-color: color-mix(in srgb, #22c55e 8%, transparent);
+  }
+
+  .contrib__hover-desc {
+    font-size: 0.8rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    opacity: 0.85;
+  }
+
+  .contrib__hover-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .contrib__hover-date {
+    font-size: 0.65rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .contrib__hover-cta {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
   @media (max-width: 500px) {
-    .contrib__header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
-    }
-
-    .contrib__link {
-      grid-template-columns: 1fr auto;
-      gap: 0.3rem 0.75rem;
-    }
-
-    .contrib__num {
-      grid-row: 1;
-      grid-column: 1;
-      padding-top: 0;
-    }
-
-    .contrib__repo {
-      grid-column: 1;
-      grid-row: 2;
-    }
-
-    .contrib__title {
-      grid-column: 1 / 3;
-      grid-row: 3;
-    }
-
-    .contrib__state {
-      grid-column: 2;
-      grid-row: 1 / 3;
-      align-self: center;
-    }
+    .contrib__header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
   }
 </style>
