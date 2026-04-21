@@ -19,7 +19,8 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
       </div>
     </div>
 
-    <ul class="contrib__list" id="contrib-list" role="list" aria-live="polite">
+    <div class="contrib__scroll-wrap">
+      <ul class="contrib__list" id="contrib-list" role="list" aria-live="polite">
       <!-- Skeleton rows -->
       {Array.from({ length: 6 }).map(() => (
         <li class="contrib__row contrib__row--skeleton">
@@ -32,7 +33,8 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
           </div>
         </li>
       ))}
-    </ul>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -91,6 +93,14 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
   }
 
   load();
+
+  const list = document.getElementById('contrib-list');
+  const wrap = list?.parentElement;
+  list?.addEventListener('scroll', () => {
+    if (!list || !wrap) return;
+    const atEnd = list.scrollHeight - list.scrollTop <= list.clientHeight + 4;
+    wrap.classList.toggle('is-scrolled-to-end', atEnd);
+  }, { passive: true });
 </script>
 
 <style>
@@ -140,11 +150,49 @@ const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
     font-weight: 200;
   }
 
+  .contrib__scroll-wrap {
+    position: relative;
+  }
+
+  .contrib__scroll-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--color-bg));
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .contrib__scroll-wrap.is-scrolled-to-end::after {
+    opacity: 0;
+  }
+
   .contrib__list {
     list-style: none;
     display: flex;
     flex-direction: column;
     border-top: 1px solid var(--color-border);
+    max-height: 420px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+
+  .contrib__list::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .contrib__list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .contrib__list::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 999px;
   }
 
   .contrib__row {
