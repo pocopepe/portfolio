@@ -74,10 +74,12 @@ const {
     cursor.classList.add('is-hidden');
 
     document.addEventListener('mousemove', (e) => {
-      cursor.classList.remove('is-hidden');
+      const target = e.target as Element;
+      const isText = target.closest('input, textarea, select, [contenteditable]');
+      cursor.classList.toggle('is-hidden', !!isText);
       cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      const over = (e.target as Element).closest('a, button, [role="button"]');
-      cursor.classList.toggle('is-hovering', !!over);
+      const over = target.closest('a, button, [role="button"]');
+      cursor.classList.toggle('is-hovering', !!over && !isText);
     }, { passive: true });
 
     document.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'), { passive: true });

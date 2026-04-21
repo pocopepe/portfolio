@@ -34,19 +34,24 @@
       </div>
     </div>
 
-    <div class="contrib__scroll-wrap">
-      <ul class="contrib__list" id="contrib-list" role="list" aria-live="polite">
-        {Array.from({ length: 6 }).map(() => (
-          <li class="contrib__row--skeleton">
-            <div class="contrib__link--skeleton">
-              <span class="skel skel--num"></span>
-              <span class="skel skel--repo"></span>
+    <div class="contrib__scroll-wrap" id="contrib-scroll-wrap">
+    <ul class="contrib__list" id="contrib-list" role="list" aria-live="polite">
+      {Array.from({ length: 6 }).map(() => (
+        <li class="contrib__item contrib__item--skeleton">
+          <div class="contrib__row contrib__row--skeleton">
+            <span class="contrib__index skel skel--idx"></span>
+            <div class="contrib__center">
+              <span class="skel skel--title"></span>
+              <span class="skel skel--sub"></span>
+            </div>
+            <div class="contrib__right">
               <span class="skel skel--badge"></span>
               <span class="skel skel--date"></span>
             </div>
-          </li>
-        ))}
-      </ul>
+          </div>
+        </li>
+      ))}
+    </ul>
     </div>
   </div>
 </section>
@@ -113,14 +118,6 @@
     }
   }
 
-  // ── Scroll fade ──
-  const list = document.getElementById('contrib-list');
-  const wrap = list?.parentElement;
-  list?.addEventListener('scroll', () => {
-    if (!list || !wrap) return;
-    const atEnd = list.scrollHeight - list.scrollTop <= list.clientHeight + 4;
-    wrap.classList.toggle('is-scrolled-to-end', atEnd);
-  }, { passive: true });
 
   // ── Hover card (same lerp pattern as Work section) ──
   function initHoverCard() {
@@ -203,10 +200,18 @@
     }, { passive: true });
   }
 
+  // Scroll fade
+  const listEl2 = document.getElementById('contrib-list');
+  const wrapEl  = document.getElementById('contrib-scroll-wrap');
+  listEl2?.addEventListener('scroll', () => {
+    if (!listEl2 || !wrapEl) return;
+    wrapEl.classList.toggle('is-end', listEl2.scrollHeight - listEl2.scrollTop <= listEl2.clientHeight + 4);
+  }, { passive: true });
+
   load();
 </script>
 
-<style>
+<style is:global>
   .contrib {
     padding-block: clamp(5rem, 10vw, 9rem);
     border-bottom: 1px solid var(--color-border);
@@ -253,7 +258,6 @@
     font-weight: 200;
   }
 
-  /* Scroll wrap */
   .contrib__scroll-wrap {
     position: relative;
   }
@@ -264,33 +268,25 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 100px;
     background: linear-gradient(to bottom, transparent, var(--color-bg));
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
     transition: opacity 0.3s ease;
   }
 
-  .contrib__scroll-wrap.is-scrolled-to-end::after {
-    opacity: 0;
-  }
+  .contrib__scroll-wrap.is-end::after { opacity: 0; }
 
   .contrib__list {
     list-style: none;
-    display: flex;
-    flex-direction: column;
     border-top: 1px solid var(--color-border);
-    max-height: 420px;
+    max-height: 32rem;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
+    scrollbar-width: none;
   }
 
-  .contrib__list::-webkit-scrollbar { width: 3px; }
-  .contrib__list::-webkit-scrollbar-track { background: transparent; }
-  .contrib__list::-webkit-scrollbar-thumb { background-color: var(--color-border); border-radius: 999px; }
+  .contrib__list::-webkit-scrollbar { display: none; }
 
-  /* ── Rows (mirrors Work section) ── */
   .contrib__item {
     border-bottom: 1px solid var(--color-border);
   }
@@ -301,7 +297,7 @@
     grid-template-columns: 3rem 1fr auto;
     align-items: center;
     gap: 2rem;
-    padding-block: 2rem;
+    padding-block: 0.9rem;
     padding-inline: 0.5rem;
     text-decoration: none;
     color: var(--color-text);
@@ -350,7 +346,7 @@
   }
 
   .contrib__title {
-    font-size: clamp(1.2rem, 2.8vw, 2.4rem);
+    font-size: clamp(1rem, 2vw, 1.6rem);
     font-weight: 300;
     letter-spacing: -0.02em;
     line-height: 1.05;
@@ -439,19 +435,8 @@
   .contrib__error a { color: var(--color-accent); }
 
   /* Skeleton */
-  .contrib__row--skeleton {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .contrib__link--skeleton {
-    display: grid;
-    grid-template-columns: 3rem 1fr auto auto auto;
-    align-items: center;
-    gap: 2rem;
-    padding-block: 2rem;
-    padding-inline: 0.5rem;
-    pointer-events: none;
-  }
+  .contrib__item--skeleton { pointer-events: none; }
+  .contrib__row--skeleton .contrib__fill { display: none; }
 
   .skel {
     display: block;
@@ -464,32 +449,31 @@
     background-size: 200% 100%;
     animation: shimmer 1.4s ease infinite;
     border-radius: 3px;
-    height: 10px;
   }
-  .skel--num   { width: 28px; }
-  .skel--repo  { width: 55%; height: 24px; border-radius: 3px; }
-  .skel--title { width: 80px; }
-  .skel--badge { width: 52px; height: 20px; border-radius: 999px; }
-  .skel--date  { width: 52px; }
+  .skel--idx   { width: 24px; height: 10px; }
+  .skel--title { width: 55%; height: clamp(16px, 2vw, 24px); }
+  .skel--sub   { width: 120px; height: 10px; }
+  .skel--badge { width: 52px; height: 18px; border-radius: 999px; }
+  .skel--date  { width: 48px; height: 10px; }
 
   @keyframes shimmer {
     0%   { background-position: 200% 0; }
     100% { background-position: -200% 0; }
   }
 
-  /* Mobile */
+  /* Mobile — same breakpoints as Work */
   @media (max-width: 640px) {
     .contrib__row {
       grid-template-columns: 2rem 1fr;
       gap: 1rem;
-      padding-block: 1.5rem;
+      padding-block: 0.75rem;
     }
     .contrib__right { display: none; }
     .contrib__title { white-space: normal; }
   }
 
   @media (min-width: 641px) and (max-width: 900px) {
-    .contrib__state { display: none; }
+    .contrib__date { display: none; }
   }
 
   /* ── Hover card ── */
