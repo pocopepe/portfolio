@@ -1,123 +1,97 @@
 ---
-interface Contribution {
-  repo: string;
-  number: number;
-  title: string;
-  state: 'merged' | 'open' | 'closed';
-  date: string;
-  url: string;
-}
-
-const contributions: Contribution[] = [
-  {
-    repo: 'rust-lang/rust-clippy',
-    number: 16881,
-    title: 'fix `from_over_into` false positive with conflicting blanket From impl',
-    state: 'open',
-    date: 'Apr 2026',
-    url: 'https://github.com/rust-lang/rust-clippy/pull/16881',
-  },
-  {
-    repo: 'uutils/diffutils',
-    number: 217,
-    title: 'add GNU testsuite tracking workflows',
-    state: 'open',
-    date: 'Apr 2026',
-    url: 'https://github.com/uutils/diffutils/pull/217',
-  },
-  {
-    repo: 'uutils/diffutils',
-    number: 215,
-    title: 'fix build failure on wasm32-wasip1 target',
-    state: 'merged',
-    date: 'Apr 2026',
-    url: 'https://github.com/uutils/diffutils/pull/215',
-  },
-  {
-    repo: 'uutils/sed',
-    number: 206,
-    title: 'add --version support',
-    state: 'merged',
-    date: 'Dec 2025',
-    url: 'https://github.com/uutils/sed/pull/206',
-  },
-  {
-    repo: 'AxolotlHere/chip-8',
-    number: 54,
-    title: 'implement opcodes Fx33, Fx29, Fx1E, Fx18, Fx15, Fx07, Ex9E, ExA1, Bnnn',
-    state: 'merged',
-    date: 'Jun 2025',
-    url: 'https://github.com/AxolotlHere/chip-8/pull/54',
-  },
-  {
-    repo: 'AxolotlHere/chip-8',
-    number: 38,
-    title: 'implement opcode Fx0A (wait for key press)',
-    state: 'merged',
-    date: 'Jun 2025',
-    url: 'https://github.com/AxolotlHere/chip-8/pull/38',
-  },
-  {
-    repo: 'AxolotlHere/chip-8',
-    number: 36,
-    title: 'implement CLS opcode',
-    state: 'merged',
-    date: 'Jun 2025',
-    url: 'https://github.com/AxolotlHere/chip-8/pull/36',
-  },
-  {
-    repo: 'phaserjs/template-bun',
-    number: 2,
-    title: 'address Bun template errors',
-    state: 'merged',
-    date: 'Oct 2024',
-    url: 'https://github.com/phaserjs/template-bun/pull/2',
-  },
-];
-
-const mergedCount = contributions.filter((c) => c.state === 'merged').length;
-const openCount = contributions.filter((c) => c.state === 'open').length;
+const API_URL = 'https://portfolio-api.avijusanjai.workers.dev/contributions';
 ---
 
 <section id="contributions" class="contrib">
   <div class="container-portfolio">
     <div class="contrib__header">
       <span class="section-label">Open Source</span>
-      <div class="contrib__counts" aria-label="Contribution counts">
+      <div class="contrib__counts" id="contrib-counts" aria-live="polite">
         <span class="contrib__count">
-          <span class="contrib__count-num">{mergedCount}</span>
+          <span class="contrib__count-num" id="merged-count">—</span>
           <span class="contrib__count-label">Merged</span>
         </span>
         <span class="contrib__count-sep" aria-hidden="true">/</span>
         <span class="contrib__count">
-          <span class="contrib__count-num">{openCount}</span>
+          <span class="contrib__count-num" id="open-count">—</span>
           <span class="contrib__count-label">Open</span>
         </span>
       </div>
     </div>
 
-    <ul class="contrib__list" role="list">
-      {contributions.map((c) => (
-        <li class="contrib__row">
-          <a
-            class="contrib__link"
-            href={c.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${c.repo} pull request ${c.number}: ${c.title}`}
-          >
-            <span class="contrib__num">#{c.number}</span>
-            <span class="contrib__repo">{c.repo}</span>
-            <span class="contrib__title">{c.title}</span>
-            <span class={`contrib__state contrib__state--${c.state}`}>{c.state}</span>
-            <span class="contrib__date">{c.date}</span>
-            <span class="contrib__arrow" aria-hidden="true">↗</span>
-          </a>
+    <ul class="contrib__list" id="contrib-list" role="list" aria-live="polite">
+      <!-- Skeleton rows -->
+      {Array.from({ length: 6 }).map(() => (
+        <li class="contrib__row contrib__row--skeleton">
+          <div class="contrib__link contrib__link--skeleton">
+            <span class="skel skel--num"></span>
+            <span class="skel skel--repo"></span>
+            <span class="skel skel--title"></span>
+            <span class="skel skel--badge"></span>
+            <span class="skel skel--date"></span>
+          </div>
         </li>
       ))}
     </ul>
   </div>
 </section>
+
+<script define:vars={{ API_URL }}>
+  interface Contribution {
+    repo: string;
+    number: number;
+    title: string;
+    state: 'merged' | 'open' | 'closed';
+    date: string;
+    url: string;
+  }
+
+  function renderRow(c: Contribution): string {
+    return `
+      <li class="contrib__row">
+        <a
+          class="contrib__link"
+          href="${c.url}"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="${c.repo} pull request ${c.number}: ${c.title}"
+        >
+          <span class="contrib__num">#${c.number}</span>
+          <span class="contrib__repo">${c.repo}</span>
+          <span class="contrib__title">${c.title}</span>
+          <span class="contrib__state contrib__state--${c.state}">${c.state}</span>
+          <span class="contrib__date">${c.date}</span>
+          <span class="contrib__arrow" aria-hidden="true">↗</span>
+        </a>
+      </li>
+    `;
+  }
+
+  async function load() {
+    const list = document.getElementById('contrib-list');
+    const mergedEl = document.getElementById('merged-count');
+    const openEl = document.getElementById('open-count');
+    if (!list || !mergedEl || !openEl) return;
+
+    try {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error(`${res.status}`);
+      const contributions: Contribution[] = await res.json();
+
+      mergedEl.textContent = String(contributions.filter((c) => c.state === 'merged').length);
+      openEl.textContent = String(contributions.filter((c) => c.state === 'open').length);
+      list.innerHTML = contributions.map(renderRow).join('');
+    } catch {
+      list.innerHTML = `
+        <li class="contrib__error">
+          Could not load contributions — <a href="https://github.com/pocopepe" target="_blank" rel="noopener noreferrer">view on GitHub ↗</a>
+        </li>
+      `;
+    }
+  }
+
+  load();
+</script>
 
 <style>
   .contrib {
@@ -268,10 +242,6 @@ const openCount = contributions.filter((c) => c.state === 'open').length;
     background-color: color-mix(in srgb, #22c55e 6%, transparent);
   }
 
-  .contrib__state--closed {
-    color: var(--color-muted);
-  }
-
   .contrib__date {
     font-size: 0.7rem;
     font-weight: 400;
@@ -296,7 +266,50 @@ const openCount = contributions.filter((c) => c.state === 'open').length;
     color: var(--color-accent);
   }
 
-  /* Tablet: collapse columns */
+  /* Error state */
+  .contrib__error {
+    padding-block: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--color-muted);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .contrib__error a {
+    color: var(--color-accent);
+  }
+
+  /* Skeleton */
+  .skel {
+    display: block;
+    background: linear-gradient(
+      90deg,
+      var(--color-border) 25%,
+      color-mix(in srgb, var(--color-border) 60%, transparent) 50%,
+      var(--color-border) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease infinite;
+    border-radius: 3px;
+    height: 10px;
+  }
+
+  .skel--num  { width: 40px; }
+  .skel--repo { width: 120px; }
+  .skel--title { width: 60%; }
+  .skel--badge { width: 52px; height: 20px; border-radius: 999px; }
+  .skel--date { width: 52px; }
+
+  .contrib__link--skeleton {
+    pointer-events: none;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Tablet */
   @media (max-width: 900px) {
     .contrib__link {
       grid-template-columns: 56px 1fr auto;
@@ -331,6 +344,11 @@ const openCount = contributions.filter((c) => c.state === 'open').length;
 
     .contrib__date,
     .contrib__arrow {
+      display: none;
+    }
+
+    .skel--date,
+    .skel--num ~ .skel--num {
       display: none;
     }
   }

@@ -1,0 +1,7 @@
+name = "portfolio-api"
+main = "src/index.ts"
+compatibility_date = "2025-04-12"
+compatibility_flags = ["nodejs_compat"]
+
+[observability]
+enabled = true
